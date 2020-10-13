@@ -11,7 +11,7 @@
     <img alt="happy" title="#happy" src=".github/happy.png" width="720px" />
 </h1>
 
-## Tecnologias
+## 🛠️ Tecnologias
 
 Esse projeto foi desenvolvido pelas seguintes tecnologias: 
 
@@ -21,13 +21,13 @@ Esse projeto foi desenvolvido pelas seguintes tecnologias:
 * ReactJS
 * React Native
 
-## Como Usar
+## 💯 Como Usar
 
 Para clonar e rodar essa aplicação será necessário [Git](https://git-scm.com/downloads) , [Node.js](https://nodejs.org/en/) + [Yarn](https://yarnpkg.com/) ou [Npm](https://www.npmjs.com/) instalados no seu computador.
 
 No seu terminal digite o comando:
 
-### Instalando API 
+### ⚓ Instalando API 
 
 ``` bash
 # Clone esse repositorio
