@@ -1,7 +1,5 @@
 <h1 align="center">
-
     <img alt="NextLevelWeek" title="#NextLevelWeek" src=".github/nlw.png" width="250px" />
-
 </h1>
 
 ## 💻 Projeto
@@ -10,9 +8,7 @@
  ## 
 
 <h1 align="center">
-
     <img alt="happy" title="#happy" src=".github/happy.png" width="720px" />
-
 </h1>
 
 ## Tecnologias
