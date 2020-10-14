@@ -1,4 +1,4 @@
-import React, { useState, FormEvent, ChangeEvent } from "react";
+import React, { useState, FormEvent, ChangeEvent, useEffect } from "react";
 import { Map, Marker, TileLayer } from 'react-leaflet';
 
 import '../styles/pages/create-orphanage.css';
@@ -8,6 +8,7 @@ import mapIcon from "../utils/mapIcon";
 import { LeafletMouseEvent } from "leaflet";
 import api from "../services/api";
 import { useHistory } from "react-router-dom";
+import getInitialLocation from "../utils/getInitialLocation";
 
 interface PositionInterface {
    latitude: number,
@@ -17,6 +18,8 @@ interface PositionInterface {
 export default function CreateOrphanage() {
    const history = useHistory()
 
+   const [initialPosition, setInitialPosition] = useState<[number, number]>([0, 0])
+
    const [position, setPosition] = useState<PositionInterface>()
    const [name, setName] = useState('')
    const [about, setAbout] = useState('')
@@ -25,6 +28,10 @@ export default function CreateOrphanage() {
    const [openOnWeekends, setOpenOnWeekends] = useState(true)
    const [images, setImages] = useState<File[]>([])
    const [previewImages, setPreviewImages] = useState<string[]>([])
+
+   useEffect(() => {
+      getInitialLocation().then(coords => setInitialPosition(coords))
+   }, [])
 
    function handleSelectFile({ target }: ChangeEvent<HTMLInputElement>) {
       const { files } = target
@@ -102,7 +109,7 @@ export default function CreateOrphanage() {
                   <legend>Dados</legend>
 
                   <Map
-                     center={[-27.2092052, -49.6401092]}
+                     center={initialPosition}
                      style={{ width: '100%', height: 280 }}
                      zoom={15}
                      onclick={handleMapClick}

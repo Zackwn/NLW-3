@@ -10,9 +10,15 @@ import { FiPlus, FiArrowRight } from 'react-icons/fi'
 import mapIcon from '../utils/mapIcon'
 import api from '../services/api'
 import { OrphanageInterface } from '../@types/orphanage'
+import getInitialLocation from '../utils/getInitialLocation'
 
 const OrphanagesMap: React.FC = () => {
    const [orphanages, setOrphanages] = useState<OrphanageInterface[]>()
+   const [initialPosition, setInitialPosition] = useState<[number, number]>([0, 0])
+
+   useEffect(() => {
+      getInitialLocation().then(coords => setInitialPosition(coords))
+   }, [])
 
    useEffect(() => {
       async function getOrphanages() {
@@ -41,7 +47,7 @@ const OrphanagesMap: React.FC = () => {
 
          <div className='map'>
             <Map
-               center={[-21.2490387, -50.6481808]}
+               center={initialPosition}
                zoom={15}
                style={{ width: '100%', height: '100%' }}
 
