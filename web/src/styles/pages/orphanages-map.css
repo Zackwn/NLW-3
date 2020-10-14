@@ -1,73 +1,106 @@
 #page-map {
-  width: 100vw;
-  height: 100vh;
+   width: 100vw;
+   height: 100vh;
 
-  display: grid;
-  grid-template-columns: 440px 1fr;
-  grid-template-rows: 1fr;
-  grid-template-areas:
-    "Aside Map"
-    "Aside Map"
-  ;
+   display: grid;
+   grid-template-columns: 440px 1fr;
+   grid-template-rows: 1fr;
+   grid-template-areas:
+      "Aside Map"
+      "Aside Map"
+   ;
 }
 
 #page-map aside {
-  background: linear-gradient(329.54deg, #29B6D1 0%, #00C7C7 100%);
-  padding: 80px;
+   background: linear-gradient(329.54deg, #29B6D1 0%, #00C7C7 100%);
+   padding: 80px;
 
-  grid-area: Aside;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+   grid-area: Aside;
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
 }
 
 #page-map aside header h2 {
-  font-size: 40px;
-  font-weight: 800;
-  line-height: 42px;
-  margin-top: 64px;
+   font-size: 40px;
+   font-weight: 800;
+   line-height: 42px;
+   margin-top: 64px;
 }
 
 #page-map aside header p {
-  line-height: 28px;
-  margin-top: 24px;
+   line-height: 28px;
+   margin-top: 24px;
 }
 
 #page-map aside footer {
-  display: flex;
-  flex-direction: column;
+   display: flex;
+   flex-direction: column;
 
-  line-height: 24px;
+   line-height: 24px;
 }
 
 #page-map aside footer strong {
-  font-weight: 800;
+   font-weight: 800;
 }
 
 #page-map .map {
-  position: relative;
+   position: relative;
 
-  grid-area: Map;
+   grid-area: Map;
 }
 
 #page-map .map .create-orphanages {
-  position: absolute;
-  z-index: 999;
-  right: 40px;
-  bottom: 40px;
+   position: absolute;
+   z-index: 999;
+   right: 40px;
+   bottom: 40px;
 
-  width: 64px;
-  height: 64px;
-  background-color: #15c3d6;
-  border-radius: 20px;
+   width: 64px;
+   height: 64px;
+   background-color: #15c3d6;
+   border-radius: 20px;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+   display: flex;
+   justify-content: center;
+   align-items: center;
 
-  transition: background-color 0.4s;
+   transition: background-color 0.4s;
 }
 
 #page-map .map .create-orphanages:hover {
-  background-color: #17d6eb;
+   background-color: #17d6eb;
+}
+
+#page-map .map-popup .leaflet-popup-content-wrapper {
+   background: rgba(255, 255, 255, 0.8);
+   border-radius: 20px;
+   box-shadow: none;
+}
+
+#page-map .map-popup .leaflet-popup-content {
+   color: #0089a5;
+   font-size: 20px;
+   font-weight: bold;
+   margin: 8px 12px;
+
+   display: flex;
+   align-items: center;
+   justify-content: space-between
+}
+
+#page-map .map-popup .leaflet-popup-content a {
+   width: 40px;
+   height: 40px;
+   background: #15c3d6;
+   box-shadow: 17.2868px 27.6589px 41.4884px rgba(23, 142, 166, 0.16);
+   border-radius: 12px;
+
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+#page-map .map-popup .leaflet-popup-tip-container {
+   display: none;
 }

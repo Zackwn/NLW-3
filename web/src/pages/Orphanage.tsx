@@ -1,113 +1,133 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaWhatsapp } from "react-icons/fa";
-import { FiClock, FiInfo, FiArrowLeft } from "react-icons/fi";
+import { FiClock, FiInfo } from "react-icons/fi";
 import { Map, Marker, TileLayer } from "react-leaflet";
-import { useHistory } from 'react-router-dom';
-import L from 'leaflet';
-
-import mapMarkerImg from '../images/map-marker.svg';
 
 import '../styles/pages/orphanage.css';
-
-const happyMapIcon = L.icon({
-  iconUrl: mapMarkerImg,
-
-  iconSize: [58, 68],
-  iconAnchor: [29, 68],
-  popupAnchor: [0, -60]
-})
+import Sidebar from "../components/Sidebar";
+import mapIcon from "../utils/mapIcon";
+import api from "../services/api";
+import { useParams } from "react-router-dom";
+import { OrphanageInterface, OrphanageParams } from "../@types/orphanage";
 
 export default function Orphanage() {
-  const { goBack } = useHistory();
+   const { id } = useParams<OrphanageParams>()
+   const [orphanage, setOrphanage] = useState<OrphanageInterface>()
+   const [activeImageIndex, setActiveImageIndex] = useState(0)
 
-  return (
-    <div id="page-orphanage">
-      <aside>
-        <img src={mapMarkerImg} alt="Happy" />
+   useEffect(() => {
+      async function getOrphanage() {
+         const response = await api.get(`/orphanages/${id}`)
+         setOrphanage(response.data)
+      }
 
-        <footer>
-          <button type="button" onClick={goBack}>
-            <FiArrowLeft size={24} color="#FFF" />
-          </button>
-        </footer>
-      </aside>
+      getOrphanage()
+   }, [id])
 
-      <main>
-        <div className="orphanage-details">
-          <img src="https://www.gcd.com.br/wp-content/uploads/2020/08/safe_image.jpg" alt="Lar das meninas" />
+   if (!orphanage) {
+      return (
+         <div id="page-orphanage">
+            <Sidebar />
 
-          <div className="images">
-            <button className="active" type="button">
-              <img src="https://www.gcd.com.br/wp-content/uploads/2020/08/safe_image.jpg" alt="Lar das meninas" />
-            </button>
-            <button type="button">
-              <img src="https://www.gcd.com.br/wp-content/uploads/2020/08/safe_image.jpg" alt="Lar das meninas" />
-            </button>
-            <button type="button">
-              <img src="https://www.gcd.com.br/wp-content/uploads/2020/08/safe_image.jpg" alt="Lar das meninas" />
-            </button>
-            <button type="button">
-              <img src="https://www.gcd.com.br/wp-content/uploads/2020/08/safe_image.jpg" alt="Lar das meninas" />
-            </button>
-            <button type="button">
-              <img src="https://www.gcd.com.br/wp-content/uploads/2020/08/safe_image.jpg" alt="Lar das meninas" />
-            </button>
-            <button type="button">
-              <img src="https://www.gcd.com.br/wp-content/uploads/2020/08/safe_image.jpg" alt="Lar das meninas" />
-            </button>
-          </div>
-          
-          <div className="orphanage-details-content">
-            <h1>Lar das meninas</h1>
-            <p>Presta assistência a crianças de 06 a 15 anos que se encontre em situação de risco e/ou vulnerabilidade social.</p>
+            <main>
+               <div className="orphanage-details">
+                  <h4
+                     style={
+                        { color: 'black', padding: 20 }
+                     }
+                  >Loading...</h4>
+               </div>
+            </main>
+         </div>
+      )
+   }
 
-            <div className="map-container">
-              <Map 
-                center={[-27.2092052,-49.6401092]} 
-                zoom={16} 
-                style={{ width: '100%', height: 280 }}
-                dragging={false}
-                touchZoom={false}
-                zoomControl={false}
-                scrollWheelZoom={false}
-                doubleClickZoom={false}
-              >
-                <TileLayer 
-                  url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
-                />
-                <Marker interactive={false} icon={happyMapIcon} position={[-27.2092052,-49.6401092]} />
-              </Map>
+   return (
+      <div id="page-orphanage">
+         <Sidebar />
 
-              <footer>
-                <a href="">Ver rotas no Google Maps</a>
-              </footer>
-            </div>
+         <main>
+            <div className="orphanage-details">
+               <img src={orphanage.images[activeImageIndex].url} alt="Lar das meninas" />
 
-            <hr />
+               <div className="images">
+                  {
+                     orphanage.images.map((image, index) => (
+                        <button
+                           key={image.id}
+                           className={activeImageIndex === index ? 'active' : ''}
+                           type="button"
+                           onClick={() => {
+                              setActiveImageIndex(index)
+                           }}
+                        >
+                           <img src={image.url} alt={orphanage.name} />
+                        </button>
+                     ))
+                  }
+               </div>
 
-            <h2>Instruções para visita</h2>
-            <p>Venha como se sentir mais à vontade e traga muito amor para dar.</p>
+               <div className="orphanage-details-content">
+                  <h1>{orphanage.name}</h1>
+                  <p>{orphanage.about}</p>
 
-            <div className="open-details">
-              <div className="hour">
-                <FiClock size={32} color="#15B6D6" />
-                Segunda à Sexta <br />
-                8h às 18h
-              </div>
-              <div className="open-on-weekends">
-                <FiInfo size={32} color="#39CC83" />
-                Atendemos <br />
-                fim de semana
-              </div>
-            </div>
+                  <div className="map-container">
+                     <Map
+                        center={[orphanage.latitude, orphanage.longitude]}
+                        zoom={16}
+                        style={{ width: '100%', height: 280 }}
+                        dragging={false}
+                        touchZoom={false}
+                        zoomControl={false}
+                        scrollWheelZoom={false}
+                        doubleClickZoom={false}
+                     >
+                        <TileLayer
+                           url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
+                        />
+                        <Marker interactive={false} icon={mapIcon} position={[orphanage.latitude, orphanage.longitude]} />
+                     </Map>
 
-            <button type="button" className="contact-button">
-              <FaWhatsapp size={20} color="#FFF" />
+                     <footer>
+                        <a target='_blank' rel='noopener noreferrer' href={`https://www.google.com.br/maps/dir/?api=1&destination=${orphanage.latitude},${orphanage.longitude}`}>Ver rotas no Google Maps</a>
+                     </footer>
+                  </div>
+
+                  <hr />
+
+                  <h2>Instruções para visita</h2>
+                  <p>{orphanage.instructions}</p>
+
+                  <div className="open-details">
+                     <div className="hour">
+                        <FiClock size={32} color="#15B6D6" />
+                        Segunda à Sexta <br />
+                        {orphanage.opening_hours}
+                     </div>
+                     {
+                        orphanage.open_on_weekends ? (
+                           <div className="open-on-weekends">
+                              <FiInfo size={32} color="#39CC83" />
+                              Atendemos <br />
+                              fim de semana
+                           </div>
+                        ) : (
+                              <div className="dont-open">
+                                 <FiInfo size={32} color="#FF669D" />
+                                 Não Atendemos <br />
+                                 fim de semana
+                              </div>
+                           )
+                     }
+                  </div>
+
+                  <button type="button" className="contact-button">
+                     <FaWhatsapp size={20} color="#FFF" />
               Entrar em contato
             </button>
-          </div>
-        </div>
-      </main>
-    </div>
-  );
+               </div>
+            </div>
+         </main>
+      </div>
+   );
 }
