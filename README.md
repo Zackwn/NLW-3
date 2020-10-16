@@ -1,8 +1,6 @@
 <h1 align="center">
-    <img alt="NextLevelWeek" title="#NextLevelWeek" src=".github/nlw.jpg" width="250px" />
+    <img alt="Happy" title="Happy" src=".github/logo.svg" />
 </h1>
-
-## 💻 Projeto
 
 **Happy** é um projeto desenvolvido com base no dia das crianças. Com o objetivo de conectar pessoas e orfanatos, trazendo felicidade às crianças.
  ## 
