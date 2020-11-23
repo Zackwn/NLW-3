@@ -61,7 +61,7 @@ export class UsersController {
         }
 
         // login user
-        const token = this.jwtHelper.sign({ userId: user.id })
+        const token = this.jwtHelper.sign<userPayload>({ userId: user.id })
 
         return res.json(token)
     }
