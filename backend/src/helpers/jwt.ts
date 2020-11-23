@@ -3,7 +3,12 @@ import { config } from 'dotenv'
 
 config()
 
-export class JWTHelper {
+export interface JWTHelperInterface {
+    verify<Payload extends {}>(token: string): Payload | null
+    sign<T extends {}>(payload: T): string
+}
+
+export class JWTHelper implements JWTHelperInterface {
     verify<Payload extends {}>(token: string): Payload | null {
         const payload = jwt.verify(token, String(process.env.JWT_SECRET), {
 
