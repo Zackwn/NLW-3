@@ -4,7 +4,7 @@ import Orphanage from '../models/Orphanages'
 import OrphanageView from '../views/orphanages_view'
 import OrphanageValidation from '../validation/orphanages'
 
-export default {
+export class OrphanagesController {
     async show(req: Request, res: Response) {
         const { id } = req.params
 
@@ -15,7 +15,7 @@ export default {
         })
 
         return res.json(OrphanageView.render(orphanage))
-    },
+    }
 
     async index(_: Request, res: Response) {
         const orphanageRepository = getRepository(Orphanage)
@@ -25,7 +25,7 @@ export default {
         })
 
         return res.json(OrphanageView.renderMany(orphanages))
-    },
+    }
 
     async create(req: Request, res: Response) {
         const {
