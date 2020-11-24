@@ -20,13 +20,13 @@ const AuthProvider: React.FC = ({ children }) => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [])
 
-   async function handleLogin(email: string, password: string) {
+   async function handleLogin(email: string, password: string, isToRememberUser: boolean) {
       const response = await api.post('/user/login', {
          email, password
       })
       // console.log(response)
       if (response.status === 200) {
-         setToken(response.data)
+         setToken(response.data, isToRememberUser)
          setIsAuthenticated(true)
          api.defaults.headers['authorization'] = `Bearer ${token}`
       } else {

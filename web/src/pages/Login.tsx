@@ -14,7 +14,7 @@ const Login: React.FC = () => {
    const handleSubmit = useCallback((event: FormEvent<HTMLFormElement>) => {
       event.preventDefault()
 
-      handleLogin(email, password)
+      handleLogin(email, password, false)
    }, [email, password, handleLogin])
 
    return (
