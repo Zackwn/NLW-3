@@ -78,6 +78,8 @@ div#form #go-back-button {
    justify-content: center;
 
    transition: background-color 0.2s;
+
+   cursor: pointer;
 }
 
 div#form #go-back-button:hover {
