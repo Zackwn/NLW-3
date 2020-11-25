@@ -1,0 +1,46 @@
+div.checkbox-wrapper {
+   display: flex;
+   align-items: center;
+   justify-content: flex-start;
+}
+
+div.checkbox-wrapper label {
+   color: #8FA7B3;
+   margin-left: 15px;
+}
+
+input[type=checkbox].checkbox-component {
+   appearance: none;
+
+   background: #F5F8FA;
+   border: 1px solid #D3E2E5;
+
+   width: 24px;
+   height: 24px;
+   border-radius: 8px;
+
+   display: inline-flex;
+
+   align-items: center;
+   justify-content: center;
+
+   outline: 0;
+   transition: background 0.2s;
+}
+
+input[type=checkbox].checkbox-component::before {
+   display: none;
+   content: '';
+   background-image: url('../../assets/check-icon.svg');
+   background-size: 12px 12px;
+   height: 12px;
+   width: 12px;
+}
+
+input[type=checkbox].checkbox-component:checked {
+   background: #37C77F;
+}
+
+input[type=checkbox].checkbox-component:checked::before {
+   display: block;
+}

@@ -1,21 +1,27 @@
 import React, { useCallback, useState, FormEvent, useContext } from 'react'
 import AccessPage from '../components/AccessPage'
 import Button from '../components/Button'
+import Checkbox from '../components/Checkbox'
 import Form from '../components/Form'
 import Input from '../components/Input'
 import AuthContext from '../context/auth/AuthContext'
+import { Link } from 'react-router-dom'
+
+import '../styles/pages/login.css'
 
 const Login: React.FC = () => {
    const { handleLogin } = useContext(AuthContext)
 
    const [email, setEmail] = useState('')
    const [password, setPassword] = useState('')
+   const [rememberUser, setRememberUser] = useState(false)
 
    const handleSubmit = useCallback((event: FormEvent<HTMLFormElement>) => {
       event.preventDefault()
 
-      handleLogin(email, password, false)
-   }, [email, password, handleLogin])
+      console.log({ rememberUser })
+      handleLogin(email, password, rememberUser)
+   }, [email, password, handleLogin, rememberUser])
 
    return (
       <div>
@@ -33,6 +39,14 @@ const Login: React.FC = () => {
                   onChange={({ target }) => setPassword(target.value)}
                   value={password}
                />
+               <div className='form-space-between-wrapper'>
+                  <Checkbox
+                     id='remember-me'
+                     labelText='Lembrar-me'
+                     onChange={({ target }) => setRememberUser(target.checked)}
+                  />
+                  <Link to='forgot-password' className='form-link'>Esqueci minha senha</Link>
+               </div>
                <Button type='submit'>Entrar</Button>
             </Form>
          </AccessPage>
