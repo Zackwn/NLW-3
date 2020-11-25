@@ -10,6 +10,10 @@ form#form-component {
    row-gap: 25px;
 }
 
+.margin-bottom {
+   margin-bottom: 10px;
+}
+
 form#form-component h1#form-title {
    text-align: left;
    align-self: flex-start;
@@ -21,6 +25,11 @@ form#form-component h1#form-title {
    font-weight: bold;
    font-size: 32px;
    line-height: 34px;
+}
 
-   margin-bottom: 10px;
+form#form-component h2#form-subtitle {
+   color: #5C8599;
+   font-weight: 600;
+   font-size: 18px;
+   line-height: 28px;
 }
