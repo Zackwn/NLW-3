@@ -56,4 +56,30 @@ div#form {
 
    align-items: center;
    justify-content: center;
+
+   position: relative;
+}
+
+div#form #go-back-button {
+   position: absolute;
+   right: 40px;
+   top: 43px;
+
+   background-color: #EBF2F5;
+   border-radius: 16px;
+
+   width: 48px;
+   height: 48px;
+
+   border: none;
+
+   display: flex;
+   align-items: center;
+   justify-content: center;
+
+   transition: background-color 0.2s;
+}
+
+div#form #go-back-button:hover {
+   background-color: #e2e9ec;
 }
