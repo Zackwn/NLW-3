@@ -1,7 +1,12 @@
-declare type userPayload = { userId: number }
+import { Redis } from 'ioredis'
 
-declare namespace Express {
-    export interface Request {
-        userId: number
+declare global {
+    declare type userPayload = { userId: number }
+
+    declare namespace Express {
+        export interface Request {
+            userId: number,
+            redis: Redis
+        }
     }
 }
