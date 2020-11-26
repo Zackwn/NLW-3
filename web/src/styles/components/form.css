@@ -14,6 +14,18 @@ form#form-component {
    margin-bottom: 10px;
 }
 
+form#form-component div#form-component-titles-wrapper {
+   display: flex;
+
+   align-self: flex-start;
+   flex-direction: column;
+   align-items: flex-start;
+
+   row-gap: 25px;
+
+   width: 80%;
+}
+
 form#form-component h1#form-title {
    text-align: left;
    align-self: flex-start;
