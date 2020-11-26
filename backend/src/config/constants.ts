@@ -1,0 +1,1 @@
+export const REDIS_FORGOT_PASSWORD_PREFIX = 'forgot_password:'
