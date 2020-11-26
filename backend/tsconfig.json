@@ -12,7 +12,8 @@
       "strict": false,
       "moduleResolution": "node",
       "resolveJsonModule": true,
-      "experimentalDecorators": true
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true
     },
     "include": [
       "src", "@types/*"

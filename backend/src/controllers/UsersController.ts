@@ -6,6 +6,7 @@ import {
 import { getRepository } from 'typeorm'
 import User from '../models/Users'
 import { JWTHelperInterface } from '../helpers/jwt'
+import UserValidation from '../validation/user'
 
 export class UsersController {
     jwtHelper: JWTHelperInterface
@@ -21,9 +22,17 @@ export class UsersController {
             name
         } = req.body
 
+        const userData = {
+            email, password, name
+        }
+
+        await UserValidation.create.validate(userData, {
+            abortEarly: false
+        })
+
         const hashPassword = await generatePasswordHash(password)
 
-        const userData = { email, password: hashPassword, name }
+        userData.password = hashPassword
 
         const userRepository = getRepository(User)
 
