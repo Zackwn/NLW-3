@@ -7,6 +7,7 @@ import { getRepository } from 'typeorm'
 import User from '../models/Users'
 import { JWTHelperInterface } from '../helpers/jwt'
 import UserValidation from '../validation/user'
+import UserView from '../views/users_view'
 
 export class UsersController {
     jwtHelper: JWTHelperInterface
@@ -42,7 +43,7 @@ export class UsersController {
 
         return res.status(201).json({
             message: 'Successfuly created!',
-            user: newUser
+            user: UserView.render(newUser)
         })
     }
 
