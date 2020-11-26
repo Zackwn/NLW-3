@@ -10,9 +10,13 @@ export class OrphanagesController {
 
         const orphanageRepository = getRepository(Orphanage)
 
-        const orphanage = await orphanageRepository.findOneOrFail(id, {
+        const orphanage = await orphanageRepository.findOne(id, {
             relations: ['images']
         })
+
+        if (!orphanage) {
+            return res.json()
+        }
 
         return res.json(OrphanageView.render(orphanage))
     }
