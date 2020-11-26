@@ -4,6 +4,7 @@ import { REDIS_FORGOT_PASSWORD_PREFIX } from '../config/constants'
 import { getRepository } from 'typeorm'
 import User from '../models/Users'
 import { sendMail } from '../helpers/sendMail'
+import { hash as hashPassword } from 'argon2'
 
 export class UsersPasswordController {
     async forgotPassword(req: Request, res: Response) {
@@ -39,6 +40,30 @@ export class UsersPasswordController {
                 </a>
             `
         })
+
+        return res.send()
+    }
+
+    async changePassword(req: Request, res: Response) {
+        const { newPassword, token } = req.body
+
+        const userId = await req.redis.get(
+            `${REDIS_FORGOT_PASSWORD_PREFIX}${token}`
+        )
+
+        if (!userId) {
+            return res.status(400).json({ error: 'Change password token expired' })
+        }
+
+        const userRepository = getRepository(User)
+
+        const user = await userRepository.findOne(userId)
+
+        const hashNewPassword = await hashPassword(newPassword)
+
+        user.password = hashNewPassword
+
+        await userRepository.save(user)
 
         return res.send()
     }

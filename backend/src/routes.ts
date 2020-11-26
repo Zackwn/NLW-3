@@ -26,6 +26,7 @@ routes.post('/user/login', (req, res) => usersController.login(req, res))
 
 /* User Password */
 routes.post('/user/forgot-password', (req, res) => usersPassword.forgotPassword(req, res))
+routes.post('/user/change-password', (req, res) => usersPassword.changePassword(req, res))
 
 /* Protected Routes bellow */
 routes.use(authMiddleware)
