@@ -39,5 +39,7 @@ export class UsersPasswordController {
                 </a>
             `
         })
+
+        return res.send()
     }
 }
