@@ -9,11 +9,13 @@ import { JWTHelper } from './helpers/jwt'
 import { OrphanagesController } from './controllers/OrphanagesController'
 import { UsersController } from './controllers/UsersController'
 import authMiddleware from './middlewares/auth'
+import { UsersPasswordController } from './controllers/UsersPasswordController'
 
 const jwtHelper = new JWTHelper()
 
 const orphanagesController = new OrphanagesController()
 const usersController = new UsersController(jwtHelper)
+const usersPassword = new UsersPasswordController()
 
 const routes = Router()
 const upload = multer(multerConfig)
@@ -21,6 +23,9 @@ const upload = multer(multerConfig)
 /* Users */
 routes.post('/user', (req, res) => usersController.create(req, res))
 routes.post('/user/login', (req, res) => usersController.login(req, res))
+
+/* User Password */
+routes.post('/user/forgot-password', (req, res) => usersPassword.forgotPassword(req, res))
 
 /* Protected Routes bellow */
 routes.use(authMiddleware)
