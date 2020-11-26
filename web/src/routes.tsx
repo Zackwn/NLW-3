@@ -44,7 +44,6 @@ const Routes: React.FC = () => {
 
                <Route path='/orphanages/create' exact component={CreateOrphanage} />
                <Route path='/orphanages/:id' exact component={Orphanage} />
-
             </Switch>
          </AuthProvider>
       </BrowserRouter>
