@@ -11,6 +11,7 @@ import AuthProvider from './context/auth/AuthProvider'
 import AuthContext from './context/auth/AuthContext'
 import Login from './pages/Login'
 import ForgotPassword from './pages/ForgotPassword'
+import ChangePassword from './pages/ChangePassword'
 
 function Route({ isPrivate = false, ...routeParams }: { isPrivate?: boolean } & RouteProps) {
    const { isLoading, isAuthenticated } = useContext(AuthContext)
@@ -39,6 +40,7 @@ const Routes: React.FC = () => {
                <Route path='/login' exact component={Login} />
 
                <Route path='/forgot-password' component={ForgotPassword} />
+               <Route path='/change-password/:token' component={ChangePassword} />
 
                <Route path='/orphanages' exact component={OrphanagesMap} />
 
