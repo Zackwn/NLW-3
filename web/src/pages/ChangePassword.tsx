@@ -19,11 +19,17 @@ const ChangePassword: React.FC = () => {
    const history = useHistory()
    const { token } = useParams<ChangePasswordParams>()
    const [newPassword, setNewPassword] = useState('')
+   const [newPasswordConfirm, setNewPasswordConfirm] = useState('')
 
    const [showNewPassword, setShowNewPassword] = useState(false)
+   const [showNewPasswordConfirm, setShowNewPasswordConfirm] = useState(false)
 
    async function handleChangePassword(event: FormEvent<HTMLFormElement>) {
       event.preventDefault()
+
+      if (newPassword !== newPasswordConfirm) {
+         return
+      }
 
       const response = await api.post('/user/change-password', {
          token,
@@ -55,6 +61,22 @@ const ChangePassword: React.FC = () => {
                   className='password-icon'
                   onClick={() => {
                      setShowNewPassword(currentState => !currentState)
+                  }}
+               />
+            </div>
+            <div className='input-password-wrapper'>
+               <Input
+                  labelText='Repetir senha'
+                  type={showNewPasswordConfirm ? 'text' : 'password'}
+                  value={newPasswordConfirm}
+                  onChange={({ target }) => setNewPasswordConfirm(target.value)}
+               />
+               <img
+                  src={showNewPasswordConfirm ? eye : eyeOff}
+                  alt='Eye'
+                  className='password-icon'
+                  onClick={() => {
+                     setShowNewPasswordConfirm(currentState => !currentState)
                   }}
                />
             </div>
