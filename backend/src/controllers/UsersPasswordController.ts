@@ -45,7 +45,11 @@ export class UsersPasswordController {
     }
 
     async changePassword(req: Request, res: Response) {
-        const { newPassword, token } = req.body
+        const { newPassword, confirmPassword, token } = req.body
+
+        if (newPassword !== confirmPassword) {
+            return res.status(400).send()
+        }
 
         const userId = await req.redis.get(
             `${REDIS_FORGOT_PASSWORD_PREFIX}${token}`
