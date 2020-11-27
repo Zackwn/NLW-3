@@ -1,4 +1,4 @@
-import React from 'react'
+import { createContext } from 'react'
 
 interface AuthContext {
    isAuthenticated: boolean,
@@ -6,4 +6,4 @@ interface AuthContext {
    handleLogin(email: string, password: string, isToRememberUser: boolean): Promise<void>
 }
 
-export default React.createContext<AuthContext>({} as AuthContext)
+export default createContext<AuthContext>({} as AuthContext)
