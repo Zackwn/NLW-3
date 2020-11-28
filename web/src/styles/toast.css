@@ -1,0 +1,54 @@
+div#toast-container {
+   position: absolute;
+
+   top: 0;
+   left: 0;
+
+   display: flex;
+   flex-direction: column;
+
+   background: transparent;
+
+   overflow: hidden;
+
+   width: 20%;
+   height: 100%;
+
+   padding: 10px;
+
+   row-gap: 10px;
+}
+
+@keyframes slide-in {
+   100% {
+      left: 0;
+   }
+}
+
+div#toast-container .animate-toast {
+   position: relative;
+   left: -30em;
+
+   -webkit-animation: slide-in 1s forwards;
+   animation: slide-in 1s forwards;
+}
+
+div#toast-container .toast {
+   width: max-content;
+
+   border-radius: 20px;
+
+   padding: 10px;
+}
+
+div#toast-container .warn {
+   background-color: #FFD666;
+}
+
+div#toast-container .success {
+   background-color: #32B574;
+}
+
+div#toast-container .error {
+   background-color: #FF669D;
+}
