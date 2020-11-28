@@ -12,6 +12,7 @@ import AuthContext from './context/auth/AuthContext'
 import Login from './pages/Login'
 import ForgotPassword from './pages/ForgotPassword'
 import ChangePassword from './pages/ChangePassword'
+import ToastProvider from './context/toast/ToastProvider'
 
 function Route({ isPrivate = false, ...routeParams }: { isPrivate?: boolean } & RouteProps) {
    const { isLoading, isAuthenticated } = useContext(AuthContext)
@@ -34,19 +35,21 @@ const Routes: React.FC = () => {
    return (
       <BrowserRouter>
          <AuthProvider>
-            <Switch>
-               <Route path='/' exact component={Landing} />
+            <ToastProvider>
+               <Switch>
+                  <Route path='/' exact component={Landing} />
 
-               <Route path='/login' exact component={Login} />
+                  <Route path='/login' exact component={Login} />
 
-               <Route path='/forgot-password' component={ForgotPassword} />
-               <Route path='/change-password/:token' component={ChangePassword} />
+                  <Route path='/forgot-password' component={ForgotPassword} />
+                  <Route path='/change-password/:token' component={ChangePassword} />
 
-               <Route path='/orphanages' exact component={OrphanagesMap} />
+                  <Route path='/orphanages' exact component={OrphanagesMap} />
 
-               <Route path='/orphanages/create' exact component={CreateOrphanage} />
-               <Route path='/orphanages/:id' exact component={Orphanage} />
-            </Switch>
+                  <Route path='/orphanages/create' exact component={CreateOrphanage} />
+                  <Route path='/orphanages/:id' exact component={Orphanage} />
+               </Switch>
+            </ToastProvider>
          </AuthProvider>
       </BrowserRouter>
    )
