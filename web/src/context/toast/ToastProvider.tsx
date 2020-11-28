@@ -1,39 +1,47 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import ToastContext from './ToastContext'
 
-import { IToast } from './ToastContext'
+import { IToastConfig } from './ToastContext'
 
 import '../../styles/toast.css'
 
 const ToastProvider: React.FC = ({ children }) => {
-   const [toasts, setToasts] = useState<IToast[]>([])
+   const toastsContainer = useRef<HTMLDivElement>(null)
    const [timeoutIDs, setTimeoutIDs] = useState<NodeJS.Timeout[]>([])
 
-   useEffect(() => {
-      if (timeoutIDs.length > 0) {
-         let timeoutID = timeoutIDs.shift()
-         if (timeoutID) {
-            console.log('clear...')
-            clearTimeout(timeoutID)
-         }
-      }
-      // if timeoutIDs is a dependency, after creating timeout it will be cleared
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [])
+   function toast(toastConfig: IToastConfig) {
+      let toast = document.createElement('div')
+      toast.innerHTML = toastConfig.message
 
-   function toast(toast: IToast) {
-      setToasts([...toasts, toast])
+      toast.classList.add('toast')
+      toast.classList.add('animate-toast-in')
 
-      let timeoutID = setTimeout(() => {
-         setToasts(toasts => {
-            return toasts.filter((_, index) => {
-               return index !== 0
-            })
+      toast.classList.add(toastConfig.type)
+
+      toastsContainer.current?.appendChild(toast)
+
+      const timeoutID = setTimeout(() => {
+         toast.classList.remove('animate-toast-in')
+         toast.classList.add('animate-toast-out')
+         toast.addEventListener('animationend', (event) => {
+            if (event.animationName === 'slide-out') {
+               toastsContainer.current?.removeChild(toast)
+            }
          })
       }, 3000)
 
-      setTimeoutIDs([...timeoutIDs, timeoutID])
+      setTimeoutIDs(currentState => [...currentState, timeoutID])
    }
+
+   useEffect(() => {
+      if (timeoutIDs.length) {
+         const timeoutID = timeoutIDs.shift()
+         if (timeoutID) {
+            clearTimeout(timeoutID)
+         }
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [])
 
    return (
       <ToastContext.Provider
@@ -42,15 +50,7 @@ const ToastProvider: React.FC = ({ children }) => {
          }}
       >
          {children}
-         <div id='toast-container'>
-            {toasts.map((toast, index) => {
-               return (
-                  <div key={Math.random() + Math.random()} className={`toast ${toast.type}`}>
-                     {toast.message}
-                  </div>
-               )
-            })}
-         </div>
+         <div ref={toastsContainer} id='toast-container' />
       </ToastContext.Provider>
    )
 }

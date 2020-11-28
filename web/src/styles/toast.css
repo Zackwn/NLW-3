@@ -20,21 +20,39 @@ div#toast-container {
 }
 
 @keyframes slide-in {
+   0% {
+      left: -30em;
+   }
+
    100% {
       left: 0;
    }
 }
 
-div#toast-container .animate-toast {
-   position: relative;
-   left: -30em;
+@keyframes slide-out {
+   0% {
+      left: 0;
+   }
 
+   100% {
+      left: -30em;
+   }
+}
+
+div#toast-container .animate-toast-out {
+   -webkit-animation: slide-out 1s forwards;
+   animation: slide-out 1s forwards;
+}
+
+div#toast-container .animate-toast-in {
    -webkit-animation: slide-in 1s forwards;
    animation: slide-in 1s forwards;
 }
 
 div#toast-container .toast {
-   width: max-content;
+   position: relative;
+
+   width: fit-content;
 
    border-radius: 20px;
 
