@@ -8,6 +8,7 @@ import User from '../models/Users'
 import { JWTHelperInterface } from '../helpers/jwt'
 import UserValidation from '../validation/user'
 import UserView from '../views/users_view'
+import { AppError } from '../errors/appError'
 
 export class UsersController {
     jwtHelper: JWTHelperInterface
@@ -56,8 +57,8 @@ export class UsersController {
         const user = await userRepository.findOne({ where: { email } })
 
         if (!user) {
-            return res.status(400).json({
-                errors: {
+            throw new AppError(400, {
+                fieldErrors: {
                     email: 'Nenhum usuário cadastrado com esse email'
                 }
             })
@@ -67,8 +68,8 @@ export class UsersController {
         const isPasswordCorrect = await verifyPassword(user.password, password)
 
         if (!isPasswordCorrect) {
-            return res.status(400).json({
-                errors: {
+            throw new AppError(400, {
+                fieldErrors: {
                     password: 'Senha incorreta'
                 }
             })

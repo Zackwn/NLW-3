@@ -5,6 +5,7 @@ import { getRepository } from 'typeorm'
 import User from '../models/Users'
 import { sendMail } from '../helpers/sendMail'
 import { hash as hashPassword } from 'argon2'
+import { AppError } from '../errors/appError'
 
 export class UsersPasswordController {
     async forgotPassword(req: Request, res: Response) {
@@ -15,8 +16,8 @@ export class UsersPasswordController {
         const user = await userRepository.findOne({ where: { email } })
 
         if (!user) {
-            return res.status(400).json({
-                errors: {
+            throw new AppError(400, {
+                fieldErrors: {
                     email: 'Email não registrado'
                 }
             })
@@ -48,7 +49,7 @@ export class UsersPasswordController {
         const { newPassword, confirmPassword, token } = req.body
 
         if (newPassword !== confirmPassword) {
-            return res.status(400).json({
+            throw new AppError(400, {
                 error: 'Senhas divergentes'
             })
         }
@@ -58,7 +59,9 @@ export class UsersPasswordController {
         )
 
         if (!userId) {
-            return res.status(400).json({ error: 'Token de troca de senha expirou' })
+            throw new AppError(400, {
+                error: 'Token de troca de senha expirou'
+            })
         }
 
         const userRepository = getRepository(User)
