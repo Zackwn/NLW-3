@@ -25,7 +25,7 @@ export class OrphanagesController {
         const orphanageRepository = getRepository(Orphanage)
 
         const orphanages = await orphanageRepository.find({
-            relations: ['images']
+            relations: ['images', 'user']
         })
 
         return res.json(OrphanageView.renderMany(orphanages))
@@ -58,7 +58,8 @@ export class OrphanagesController {
             instructions,
             opening_hours,
             open_on_weekends: open_on_weekends === 'true',
-            images
+            images,
+            creator_id: req.userId
         }
 
         await OrphanageValidation.create.validate(data, {
