@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn, ManyToOne } from 'typeorm'
 import Image from './Images'
+import User from './Users'
 
 @Entity('orphanages')
 export default class Orphanages {
@@ -43,7 +44,14 @@ export default class Orphanages {
     @OneToMany(() => Image, (image) => image.orphanage, {
         cascade: ['insert', 'update']
     })
-    // nome da coluna que armazena o relacionamento 
-    @JoinColumn({ name: 'orphanage_id' })
     images: Image[]
+
+    @ManyToOne(() => User, (user) => user.orphanages, {
+        cascade: ['insert', 'update']
+    })
+    @JoinColumn({ name: 'creator_id' }) // default -> userId
+    user: User
+
+    @Column()
+    creator_id: number
 }

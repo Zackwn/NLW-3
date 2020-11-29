@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import Orphanage from "./Orphanages";
 
 @Entity('users')
 export default class Users {
@@ -13,4 +14,7 @@ export default class Users {
 
     @Column()
     password!: string
+
+    @OneToMany(() => Orphanage, (orphanage) => orphanage.user)
+    orphanages: Orphanage[]
 }
