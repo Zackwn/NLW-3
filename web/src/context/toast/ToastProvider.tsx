@@ -18,7 +18,7 @@ const ToastProvider: React.FC = ({ children }) => {
 
       toast.classList.add(toastConfig.type)
 
-      toastsContainer.current?.appendChild(toast)
+      toastsContainer.current?.prepend(toast)
 
       const timeoutID = setTimeout(() => {
          toast.classList.remove('animate-toast-in')
@@ -28,7 +28,7 @@ const ToastProvider: React.FC = ({ children }) => {
                toastsContainer.current?.removeChild(toast)
             }
          })
-      }, 3000)
+      }, 2000)
 
       setTimeoutIDs(currentState => [...currentState, timeoutID])
    }
