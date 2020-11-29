@@ -11,6 +11,8 @@ const ForgotPassword: React.FC = () => {
 
    const { toast } = useContext(ToastContext)
 
+   const [emailError, setEmailError] = useState<string | undefined>()
+
    async function handleForgotPassword(event: FormEvent<HTMLFormElement>) {
       event.preventDefault()
 
@@ -25,11 +27,13 @@ const ForgotPassword: React.FC = () => {
          })
          toast({ message: 'Email enviado!', type: 'success' })
       } catch (error) {
-         if (error.response.data.errors) {
-            toast({
-               message: Object.values(error.response.data.errors)[0] as string,
-               type: 'error'
-            })
+         const formErrors = error.response.data.errors
+         if (formErrors) {
+            if (formErrors.email) {
+               setEmailError(formErrors.email)
+            } else {
+               setEmailError(undefined)
+            }
          } else {
             toast({ message: 'Algo deu errado, tente novamente!', type: 'error' })
          }
@@ -47,6 +51,7 @@ const ForgotPassword: React.FC = () => {
                labelText='E-mail'
                value={email}
                onChange={({ target }) => setEmail(target.value)}
+               error={emailError}
             />
             <Button>Entrar</Button>
          </Form>

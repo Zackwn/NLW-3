@@ -18,24 +18,36 @@ const Login: React.FC = () => {
    const [password, setPassword] = useState('')
    const [rememberUser, setRememberUser] = useState(false)
 
+   const [emailError, setEmailError] = useState<string | undefined>()
+   const [passwordError, setPasswordError] = useState<string | undefined>()
+
    const handleSubmit = useCallback(async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault()
 
       console.log({ rememberUser })
       try {
          await handleLogin(email, password, rememberUser)
+         setEmailError(undefined)
+         setPasswordError(undefined)
          toast({ message: 'Login feito com sucesso!', type: 'success' })
       } catch (error) {
-         if (error.response.data.errors) {
-            toast({
-               message: Object.values(error.response.data.errors)[0] as string,
-               type: 'error'
-            })
+         const formErrors = error.response.data.errors
+         if (formErrors) {
+            if (formErrors.email) {
+               setEmailError(formErrors.email)
+            } else {
+               setEmailError(undefined)
+            }
+            if (formErrors.password) {
+               setPasswordError(formErrors.password)
+            } else {
+               setPasswordError(undefined)
+            }
          } else {
             toast({ message: 'Algo deu errado, tente novamente', type: 'error' })
          }
       }
-   }, [rememberUser, handleLogin, email, password, toast])
+   }, [rememberUser, handleLogin, email, password, toast, setPasswordError])
 
    return (
       <div>
@@ -46,12 +58,14 @@ const Login: React.FC = () => {
                   type="email"
                   onChange={({ target }) => setEmail(target.value)}
                   value={email}
+                  error={emailError}
                />
                <Input
                   labelText='Senha'
                   type="password"
                   onChange={({ target }) => setPassword(target.value)}
                   value={password}
+                  error={passwordError}
                />
                <div className='form-space-between-wrapper'>
                   <Checkbox

@@ -31,6 +31,7 @@ const ChangePassword: React.FC = () => {
       event.preventDefault()
 
       if (newPassword !== newPasswordConfirm) {
+         toast({ message: 'As senhas tem que ser iguais', type: 'warn' })
          return
       }
 
@@ -47,9 +48,9 @@ const ChangePassword: React.FC = () => {
             history.push('/')
          }
       } catch (error) {
-         console.log('aaaaaaaaaaa')
-         console.log({ ...error })
-         toast({ message: 'Algo deu errado, tente novamente!', type: 'error' })
+         if (error.response.data.error) {
+            toast({ message: error.response.data.error, type: 'error' })
+         }
       }
    }
 
