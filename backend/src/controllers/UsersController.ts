@@ -58,7 +58,7 @@ export class UsersController {
         if (!user) {
             return res.status(400).json({
                 errors: {
-                    email: 'No registered user with this email'
+                    email: 'Nenhum usuário cadastrado com esse email'
                 }
             })
         }
@@ -67,7 +67,11 @@ export class UsersController {
         const isPasswordCorrect = await verifyPassword(user.password, password)
 
         if (!isPasswordCorrect) {
-            return res.status(400).send()
+            return res.status(400).json({
+                errors: {
+                    password: 'Senha incorreta'
+                }
+            })
         }
 
         // login user

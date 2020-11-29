@@ -17,7 +17,7 @@ export class UsersPasswordController {
         if (!user) {
             return res.status(400).json({
                 errors: {
-                    email: ['email not registered']
+                    email: 'Email não registrado'
                 }
             })
         }
@@ -48,7 +48,9 @@ export class UsersPasswordController {
         const { newPassword, confirmPassword, token } = req.body
 
         if (newPassword !== confirmPassword) {
-            return res.status(400).send()
+            return res.status(400).json({
+                error: 'Senhas divergentes'
+            })
         }
 
         const userId = await req.redis.get(
@@ -56,7 +58,7 @@ export class UsersPasswordController {
         )
 
         if (!userId) {
-            return res.status(400).json({ error: 'Change password token expired' })
+            return res.status(400).json({ error: 'Token de troca de senha expirou' })
         }
 
         const userRepository = getRepository(User)
