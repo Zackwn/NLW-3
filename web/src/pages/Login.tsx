@@ -31,15 +31,15 @@ const Login: React.FC = () => {
          setPasswordError(undefined)
          toast({ message: 'Login feito com sucesso!', type: 'success' })
       } catch (error) {
-         const formErrors = error.response.data.errors
-         if (formErrors) {
-            if (formErrors.email) {
-               setEmailError(formErrors.email)
+         const { fieldErrors } = error.response.data
+         if (fieldErrors) {
+            if (fieldErrors.email) {
+               setEmailError(fieldErrors.email)
             } else {
                setEmailError(undefined)
             }
-            if (formErrors.password) {
-               setPasswordError(formErrors.password)
+            if (fieldErrors.password) {
+               setPasswordError(fieldErrors.password)
             } else {
                setPasswordError(undefined)
             }

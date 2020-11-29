@@ -27,10 +27,10 @@ const ForgotPassword: React.FC = () => {
          })
          toast({ message: 'Email enviado!', type: 'success' })
       } catch (error) {
-         const formErrors = error.response.data.errors
-         if (formErrors) {
-            if (formErrors.email) {
-               setEmailError(formErrors.email)
+         const { fieldErrors } = error.response.data
+         if (fieldErrors) {
+            if (fieldErrors.email) {
+               setEmailError(fieldErrors.email)
             } else {
                setEmailError(undefined)
             }
