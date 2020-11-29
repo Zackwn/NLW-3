@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react'
+import React, { FormEvent, useContext, useState } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import AccessPage from '../components/AccessPage'
 import Button from '../components/Button'
@@ -10,6 +10,7 @@ import eye from '../assets/eye.svg'
 import eyeOff from '../assets/eye-off.svg'
 
 import '../styles/pages/change-password.css'
+import ToastContext from '../context/toast/ToastContext'
 
 interface ChangePasswordParams {
    token: string
@@ -17,6 +18,8 @@ interface ChangePasswordParams {
 
 const ChangePassword: React.FC = () => {
    const history = useHistory()
+   const { toast } = useContext(ToastContext)
+
    const { token } = useParams<ChangePasswordParams>()
    const [newPassword, setNewPassword] = useState('')
    const [newPasswordConfirm, setNewPasswordConfirm] = useState('')
@@ -31,13 +34,22 @@ const ChangePassword: React.FC = () => {
          return
       }
 
-      const response = await api.post('/user/change-password', {
-         token,
-         newPassword
-      })
+      try {
+         const response = await api.post('/user/change-password', {
+            token,
+            newPassword,
+            confirmPassword: newPasswordConfirm
+         })
 
-      if (response.status === 200) {
-         history.push('/')
+         toast({ message: 'Senha trocada com sucesso!', type: 'success' })
+
+         if (response.status === 200) {
+            history.push('/')
+         }
+      } catch (error) {
+         console.log('aaaaaaaaaaa')
+         console.log({ ...error })
+         toast({ message: 'Algo deu errado, tente novamente!', type: 'error' })
       }
    }
 

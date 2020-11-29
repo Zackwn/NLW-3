@@ -8,20 +8,34 @@ import AuthContext from '../context/auth/AuthContext'
 import { Link } from 'react-router-dom'
 
 import '../styles/pages/login.css'
+import ToastContext from '../context/toast/ToastContext'
 
 const Login: React.FC = () => {
    const { handleLogin } = useContext(AuthContext)
+   const { toast } = useContext(ToastContext)
 
    const [email, setEmail] = useState('')
    const [password, setPassword] = useState('')
    const [rememberUser, setRememberUser] = useState(false)
 
-   const handleSubmit = useCallback((event: FormEvent<HTMLFormElement>) => {
+   const handleSubmit = useCallback(async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault()
 
       console.log({ rememberUser })
-      handleLogin(email, password, rememberUser)
-   }, [email, password, handleLogin, rememberUser])
+      try {
+         await handleLogin(email, password, rememberUser)
+         toast({ message: 'Login feito com sucesso!', type: 'success' })
+      } catch (error) {
+         if (error.response.data.errors) {
+            toast({
+               message: Object.values(error.response.data.errors)[0] as string,
+               type: 'error'
+            })
+         } else {
+            toast({ message: 'Algo deu errado, tente novamente', type: 'error' })
+         }
+      }
+   }, [rememberUser, handleLogin, email, password, toast])
 
    return (
       <div>
