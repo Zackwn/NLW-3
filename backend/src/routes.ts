@@ -28,12 +28,14 @@ routes.post('/user/login', (req, res) => usersController.login(req, res))
 routes.post('/user/forgot-password', (req, res) => usersPassword.forgotPassword(req, res))
 routes.post('/user/change-password', (req, res) => usersPassword.changePassword(req, res))
 
+/* See Orphanages */
+routes.get('/orphanages', orphanagesController.index)
+routes.get('/orphanages/:id', orphanagesController.show)
+
 /* Protected Routes bellow */
 routes.use(authMiddleware)
 
-/* Orphanages */
-routes.get('/orphanages', orphanagesController.index)
-routes.get('/orphanages/:id', orphanagesController.show)
+/* Manage Orphanages */
 routes.post('/orphanage', upload.array('images'), orphanagesController.create)
 
 
