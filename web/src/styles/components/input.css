@@ -5,7 +5,7 @@ div.input-component {
 
    flex-direction: column;
 
-   row-gap: 10px;
+   /* row-gap: 10px; */
 
    align-items: center;
 }
@@ -19,6 +19,8 @@ div.input-component label {
 
    align-self: flex-start;
    text-align: left;
+
+   margin-bottom: 10px;
 }
 
 div.input-component input {
@@ -40,4 +42,25 @@ div.input-component input {
 
 div.input-component input:not([value=""]) {
    border: 1px solid #A1E9C5;
+}
+
+div.input-component label.with-error {
+   color: #FF669D;
+}
+
+div.input-component input.with-error {
+   border: 1px solid #FF669D;
+
+
+   background-color: rgba(255, 102, 158, 0.039);
+}
+
+div.input-component span {
+   color: #FF669D;
+
+   align-self: flex-start;
+
+   font-size: medium;
+
+   margin-top: 5px;
 }
