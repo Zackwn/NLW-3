@@ -5,13 +5,26 @@ import OrphanageView from '../views/orphanages_view'
 import OrphanageValidation from '../validation/orphanages'
 
 export class OrphanagesController {
+    async allFromUser(req: Request, res: Response) {
+        const { userId } = req.params
+
+        const orphanageRepository = getRepository(Orphanage)
+
+        const orphanages = await orphanageRepository.find({
+            where: { creator_id: userId },
+            relations: ['user', 'images']
+        })
+
+        return res.json(OrphanageView.renderMany(orphanages))
+    }
+
     async show(req: Request, res: Response) {
         const { id } = req.params
 
         const orphanageRepository = getRepository(Orphanage)
 
         const orphanage = await orphanageRepository.findOne(id, {
-            relations: ['images']
+            relations: ['images', 'user']
         })
 
         if (!orphanage) {
