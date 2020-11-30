@@ -3,7 +3,7 @@
       "downlevelIteration": true,
       "outDir": "dist",
       "typeRoots": ["node_modules/@types", "@types/*"],
-      "target": "es5",
+      "target": "ES3",
       "module": "commonjs",
       "esModuleInterop": true,
       "skipLibCheck": true,
