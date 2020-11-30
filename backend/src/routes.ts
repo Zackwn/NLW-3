@@ -36,7 +36,7 @@ routes.get('/orphanages/:id', orphanagesController.show)
 routes.use(authMiddleware)
 
 /* Manage Orphanages */
+routes.get('/user/:userId/orphanages/', orphanagesController.allFromUser)
 routes.post('/orphanage', upload.array('images'), orphanagesController.create)
-
 
 export default routes
