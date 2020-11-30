@@ -14,8 +14,8 @@ export default {
             open_on_weekends: orphanage.open_on_weekends,
             images: ImagesView.renderMany(orphanage.images),
 
-            creator_name: orphanage.user.name,
-            creator_id: orphanage.creator_id
+            creator_name: orphanage?.user?.name,
+            creator_id: orphanage?.creator_id
         }
     },
 
