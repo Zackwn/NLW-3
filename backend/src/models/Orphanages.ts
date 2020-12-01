@@ -54,4 +54,7 @@ export default class Orphanages {
 
     @Column()
     creator_id: number
+
+    @Column()
+    pending: boolean
 }
