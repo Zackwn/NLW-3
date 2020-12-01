@@ -38,6 +38,7 @@ export class OrphanagesController {
         const orphanageRepository = getRepository(Orphanage)
 
         const orphanages = await orphanageRepository.find({
+            where: { pending: false },
             relations: ['images', 'user']
         })
 
