@@ -1,0 +1,58 @@
+aside#dashboard-sidebar {
+   width: 96px;
+   height: 100%;
+
+   padding: 32px 24px;
+   background: linear-gradient(329.54deg, #15B6D6 0%, #15D6D6 100%);
+
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+   align-items: center;
+}
+
+aside#dashboard-sidebar img {
+   width: 48px;
+}
+
+aside#dashboard-sidebar #dashboard-links {
+   display: flex;
+
+   flex-direction: column;
+
+   align-items: center;
+
+   gap: 16px;
+}
+
+aside#dashboard-sidebar a,
+aside#dashboard-sidebar button {
+   width: 48px;
+   height: 48px;
+
+   border: 0;
+
+   background: #12AFCB;
+   border-radius: 16px;
+
+   cursor: pointer;
+
+   transition: background-color 0.2s;
+
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+aside#dashboard-sidebar button.active {
+   background: #FFD666;
+}
+
+aside#dashboard-sidebar button.active:hover {
+   background-color: #e0bc5a;
+}
+
+aside#dashboard-sidebar a:hover,
+aside#dashboard-sidebar button:hover {
+   background: #17D6EB;
+}

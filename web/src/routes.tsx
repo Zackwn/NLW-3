@@ -1,6 +1,8 @@
 import React, { useContext } from 'react'
 import { BrowserRouter, Switch, Route as ReactRouterDomRoute, RouteProps, Redirect } from 'react-router-dom'
 
+import Dashboard from './pages/Dashboard'
+
 import Landing from './pages/Landing'
 import OrphanagesMap from './pages/OrphanagesMap'
 import CreateOrphanage from './pages/CreateOrphanage'
@@ -45,6 +47,8 @@ const Routes: React.FC = () => {
                   <Route path='/change-password/:token' component={ChangePassword} />
 
                   <Route path='/orphanages' exact component={OrphanagesMap} />
+
+                  <Route path='/dashboard' component={Dashboard} />
 
                   <Route path='/orphanages/create' exact component={CreateOrphanage} />
                   <Route path='/orphanages/:id' exact component={Orphanage} />
