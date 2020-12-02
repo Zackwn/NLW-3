@@ -33,6 +33,11 @@ function Route({ isPrivate = false, ...routeParams }: { isPrivate?: boolean } & 
    return <ReactRouterDomRoute {...routeParams} />
 }
 
+export const dashboardRoutes = {
+   registeredOrphanages: '/dashboard/',
+   pendingOrphanages: '/dashboard/pending/'
+}
+
 const Routes: React.FC = () => {
    return (
       <BrowserRouter>
