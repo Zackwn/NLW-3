@@ -8,7 +8,9 @@ const DashboardWrapper: React.FC = ({ children }) => {
       <div id="dashboard-wrapper">
          <DashboardSidebar />
 
-         {children}
+         <div id='dashboard-content-wrapper'>
+            {children}
+         </div>
       </div>
    )
 }
