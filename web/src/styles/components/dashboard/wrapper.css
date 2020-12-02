@@ -4,3 +4,13 @@ div#dashboard-wrapper {
 
    display: flex;
 }
+
+div#dashboard-wrapper div#dashboard-content-wrapper {
+   display: flex;
+
+   width: 100%;
+   height: 100%;
+
+   align-items: center;
+   justify-content: center;
+}
