@@ -10,10 +10,12 @@ const Dashboard: React.FC = () => {
          <Switch>
             <Route
                path={dashboardRoutes.registeredOrphanages}
+               exact
                component={() => <h2>Registered Orphanages!</h2>}
             />
             <Route
                path={dashboardRoutes.pendingOrphanages}
+               exact
                component={() => <h2>Pending Orphanages!</h2>}
             />
          </Switch>

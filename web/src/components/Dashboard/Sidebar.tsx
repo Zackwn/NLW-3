@@ -19,7 +19,6 @@ const DashboardSidebar: React.FC = () => {
       return pathname
    }, [])
 
-
    const [pathname, setPathname] = useState<string>(formatPathname(window.location.pathname))
 
    useEffect(() => {
