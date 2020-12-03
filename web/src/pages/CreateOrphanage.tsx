@@ -206,7 +206,7 @@ export default function CreateOrphanage() {
                      <div className="button-select">
                         <button
                            type="button"
-                           className={openOnWeekends === true ? 'active' : ''}
+                           className={openOnWeekends === true ? 'active-yes' : ''}
                            onClick={() => setOpenOnWeekends(true)}
                         >
                            Sim
@@ -214,7 +214,7 @@ export default function CreateOrphanage() {
 
                         <button
                            type="button"
-                           className={openOnWeekends === false ? 'active' : ''}
+                           className={openOnWeekends === false ? 'active-no' : ''}
                            onClick={() => setOpenOnWeekends(false)}
                         >
                            Não
