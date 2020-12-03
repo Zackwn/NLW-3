@@ -10,10 +10,12 @@ import { OrphanagesController } from './controllers/OrphanagesController'
 import { UsersController } from './controllers/UsersController'
 import authMiddleware from './middlewares/auth'
 import { UsersPasswordController } from './controllers/UsersPasswordController'
+import { ManageOrphanagesController } from './controllers/ManageOrphanageController'
 
 const jwtHelper = new JWTHelper()
 
 const orphanagesController = new OrphanagesController()
+const manageOrphanagesController = new ManageOrphanagesController()
 const usersController = new UsersController(jwtHelper)
 const usersPassword = new UsersPasswordController()
 
@@ -34,9 +36,5 @@ routes.get('/orphanages/:id', orphanagesController.show)
 
 /* Protected Routes bellow */
 routes.use(authMiddleware)
-
-/* Manage Orphanages */
-routes.get('/user/:userId/orphanages/', orphanagesController.allFromUser)
-routes.post('/orphanage', upload.array('images'), orphanagesController.create)
 
 export default routes
