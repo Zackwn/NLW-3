@@ -1,8 +1,11 @@
-import React from 'react';
-import { Route, Switch } from 'react-router-dom';
-import DashboardWrapper from '../../components/Dashboard/Wrapper';
+import React from 'react'
+import { Route, Switch } from 'react-router-dom'
+import DashboardWrapper from '../../components/Dashboard/Wrapper'
 
 import { dashboardRoutes } from '../../routes'
+
+import Pending from './Pending'
+import Registered from './Registered'
 
 const Dashboard: React.FC = () => {
    return (
@@ -11,12 +14,12 @@ const Dashboard: React.FC = () => {
             <Route
                path={dashboardRoutes.registeredOrphanages}
                exact
-               component={() => <h2>Registered Orphanages!</h2>}
+               component={Registered}
             />
             <Route
                path={dashboardRoutes.pendingOrphanages}
                exact
-               component={() => <h2>Pending Orphanages!</h2>}
+               component={Pending}
             />
          </Switch>
       </DashboardWrapper>
