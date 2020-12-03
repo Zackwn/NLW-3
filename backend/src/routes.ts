@@ -37,4 +37,11 @@ routes.get('/orphanages/:id', orphanagesController.show)
 /* Protected Routes bellow */
 routes.use(authMiddleware)
 
+/* Create and Update */
+routes.post('/orphanage', upload.array('images'), orphanagesController.create)
+// routes.put('/orphanage', orphanagesController.update)
+
+/* Manage Orphanages */
+routes.get('/user/orphanages/', manageOrphanagesController.getUserOrphanages)
+
 export default routes
