@@ -34,8 +34,8 @@ function Route({ isPrivate = false, ...routeParams }: { isPrivate?: boolean } & 
 }
 
 export const dashboardRoutes = {
-   registeredOrphanages: '/dashboard/',
-   pendingOrphanages: '/dashboard/pending/'
+   registeredOrphanages: '/dashboard/orphanages/',
+   pendingOrphanages: '/dashboard/orphanages/pending/'
 }
 
 const Routes: React.FC = () => {
@@ -53,6 +53,7 @@ const Routes: React.FC = () => {
 
                   <Route path='/orphanages' exact component={OrphanagesMap} />
 
+                  <Redirect exact from='/dashboard' to={dashboardRoutes.registeredOrphanages} />
                   <Route path='/dashboard' component={Dashboard} />
 
                   <Route path='/orphanages/create' exact component={CreateOrphanage} />
