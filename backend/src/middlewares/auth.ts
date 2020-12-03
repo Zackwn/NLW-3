@@ -12,10 +12,14 @@ export default function authMiddleware(req: Request, res: Response, next: NextFu
     if (scheme.toLowerCase() !== 'bearer') {
         return res.status(401).send()
     }
-    const payload = jwtHelper.verify<userPayload>(token)
-    if (!payload) {
+    try {
+        const payload = jwtHelper.verify<userPayload>(token)
+        if (!payload) {
+            return res.status(401).send()
+        }
+        req.userId = payload.userId
+        next()
+    } catch (error) {
         return res.status(401).send()
     }
-    req.userId = payload.userId
-    next()
 }
