@@ -32,7 +32,7 @@ const Registered: React.FC = () => {
             <h1 className='dashboard-content-title'>
                Orfanatos Cadastrados
             </h1>
-            <span>22 orfanatos</span>
+            <span>{orphanages?.length} orfanatos</span>
          </div>
 
          <div id='orphanages-modal-wrapper'>
