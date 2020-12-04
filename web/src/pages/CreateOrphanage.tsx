@@ -9,11 +9,7 @@ import { LeafletMouseEvent } from "leaflet";
 import api from "../services/api";
 import { useHistory } from "react-router-dom";
 import getInitialLocation from "../utils/getInitialLocation";
-
-interface PositionInterface {
-   latitude: number,
-   longitude: number
-}
+import { PositionInterface } from "../@types/position";
 
 export default function CreateOrphanage() {
    const history = useHistory()
