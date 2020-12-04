@@ -1,16 +1,14 @@
 import React from 'react'
 
 import { Map, TileLayer, Marker, } from 'react-leaflet'
+import { OrphanageInterface } from '../../@types/orphanage'
+import { formatToShortText } from '../../utils/formatToShortText'
 
 import '../../styles/components/dashboard/orphanage-modal.css'
 import mapIcon from "../../utils/mapIcon"
 
 interface OrphanageModalProps {
-   orphanage: {
-      name: string,
-      latitude: number,
-      longitude: number,
-   }
+   orphanage: OrphanageInterface
 }
 
 /**
@@ -53,7 +51,7 @@ const OrphanageModal: React.FC<OrphanageModalProps> = ({ orphanage, children }) 
             </Map>
          </div>
          <div className='orphanage-modal-detail'>
-            <p>{orphanage.name}</p>
+            <p>{formatToShortText(orphanage.name)}</p>
             <div className='orphanage-modal-detail-icons'>
                {children}
             </div>
