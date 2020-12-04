@@ -24,8 +24,8 @@ app.use((req, _, next) => {
     next()
 })
 
-app.use(routes)
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')))
+app.use(routes)
 app.use(errorHandler)
 
 const PORT = 3333
