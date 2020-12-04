@@ -1,0 +1,21 @@
+div#manage-orphanage-layout {
+   width: 100vw;
+   height: 100vh;
+
+   display: flex;
+}
+
+main#manage-orphanage-container {
+   width: 700px;
+
+   margin: 64px auto;
+   padding: 64px 80px;
+
+   border-radius: 20px;
+   border: 1px solid #D3E2E5;
+
+   background: #FFFFFF;
+   overflow: hidden;
+
+   /* color: black; */
+}
