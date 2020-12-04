@@ -55,6 +55,6 @@ export default class Orphanages {
     @Column()
     creator_id: number
 
-    @Column()
+    @Column({ default: true })
     pending: boolean
 }
