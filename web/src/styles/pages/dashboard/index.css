@@ -59,6 +59,8 @@ div.icon-button {
    justify-content: center;
 
    transition: background-color 0.2s;
+
+   cursor: pointer;
 }
 
 div.icon-button:hover {
