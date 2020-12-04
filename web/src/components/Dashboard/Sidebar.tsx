@@ -22,9 +22,11 @@ const DashboardSidebar: React.FC = () => {
    const [pathname, setPathname] = useState<string>(formatPathname(window.location.pathname))
 
    useEffect(() => {
-      listen(({ pathname }) => {
+      const cleanUp = listen(({ pathname }) => {
          setPathname(formatPathname(pathname))
       })
+
+      return cleanUp
    }, [formatPathname, listen])
 
    return (
