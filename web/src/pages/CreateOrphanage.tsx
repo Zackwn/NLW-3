@@ -146,7 +146,7 @@ export default function CreateOrphanage() {
                      />
                   </div>
 
-                  <div className="input-block">
+                  <div className="input-block images-wrapper">
                      <label htmlFor="images">Fotos</label>
 
                      <div className="images-container">
@@ -168,6 +168,7 @@ export default function CreateOrphanage() {
                         multiple
                         type='file'
                         id='image[]'
+                        className='image-input'
                         onChange={handleSelectFile}
                      />
                   </div>

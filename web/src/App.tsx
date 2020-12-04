@@ -1,6 +1,7 @@
 import React from 'react'
 import Routes from './routes'
 
+import './styles/image.css'
 import './styles/global.css'
 import 'leaflet/dist/leaflet.css'
 
