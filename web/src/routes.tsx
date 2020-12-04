@@ -15,6 +15,7 @@ import Login from './pages/Login'
 import ForgotPassword from './pages/ForgotPassword'
 import ChangePassword from './pages/ChangePassword'
 import ToastProvider from './context/toast/ToastProvider'
+import UpdateOrphanage from './pages/UpdateOrphanage'
 
 function Route({ isPrivate = false, ...routeParams }: { isPrivate?: boolean } & RouteProps) {
    const { isLoading, isAuthenticated } = useContext(AuthContext)
@@ -57,6 +58,7 @@ const Routes: React.FC = () => {
                   <Route path='/dashboard' component={Dashboard} />
 
                   <Route path='/orphanages/create' exact component={CreateOrphanage} />
+                  <Route path='/orphanages/update' exact component={UpdateOrphanage} />
                   <Route path='/orphanages/:id' exact component={Orphanage} />
                </Switch>
             </ToastProvider>
