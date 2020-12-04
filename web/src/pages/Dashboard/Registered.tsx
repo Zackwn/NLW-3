@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 
 import '../../styles/pages/dashboard/index.css'
 import OrphanageModal from '../../components/Dashboard/OrphanageModal'
@@ -7,6 +8,8 @@ import api from '../../services/api'
 import { OrphanageInterface } from '../../@types/orphanage'
 
 const Registered: React.FC = () => {
+   const history = useHistory()
+
    const [orphanages, setOrphanages] = useState<OrphanageInterface[]>()
 
    useEffect(() => {
@@ -17,6 +20,10 @@ const Registered: React.FC = () => {
 
       getOrphanages()
    }, [])
+
+   function handleUpdateOrphanage(orphanage: OrphanageInterface) {
+      history.push('/orphanages/update', { orphanage })
+   }
 
    return (
       <div id='dashboard-content-container'>
@@ -34,10 +41,16 @@ const Registered: React.FC = () => {
                      key={orphanage.id}
                      orphanage={orphanage}
                   >
-                     <div className='icon-button'>
+                     <div
+                        className='icon-button'
+                        onClick={() => handleUpdateOrphanage(orphanage)}
+                     >
                         <FiEdit3 color='#15C3D6' size={26} />
                      </div>
-                     <div className='icon-button'>
+                     <div
+                        className='icon-button'
+                        onClick={() => handleUpdateOrphanage(orphanage)}
+                     >
                         <FiTrash color='#15C3D6' size={26} />
                      </div>
                   </OrphanageModal>
