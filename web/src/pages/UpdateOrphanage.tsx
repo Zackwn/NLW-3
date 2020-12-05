@@ -1,8 +1,16 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { FiX, FiPlus } from 'react-icons/fi'
 import { useHistory } from 'react-router-dom'
-import { OrphanageInterface } from '../@types/orphanage'
 import ManageOrphanageLayout from '../components/Orphanage/ManageOrphanageLayout'
+import { Map, Marker, TileLayer } from 'react-leaflet'
+
+import { OrphanageInterface } from '../@types/orphanage'
+import { PositionInterface } from '../@types/position'
+import mapIcon from '../utils/mapIcon'
+import { LeafletMouseEvent } from 'leaflet'
+import Input from '../components/Input'
+import Textarea from '../components/Textarea'
+import Button from '../components/Button'
 
 interface Image {
    url: string,
@@ -17,6 +25,23 @@ const UpdateOrphanage: React.FC = () => {
          push('/dashboard/orphanages')
       }
    }, [location, location.state, push])
+
+   const [position, setPosition] = useState<PositionInterface>({
+      latitude: location.state?.orphanage.latitude || 1,
+      longitude: location.state?.orphanage.longitude || 1
+   })
+
+   function handleMapClick({ latlng }: LeafletMouseEvent) {
+      setPosition({
+         latitude: latlng.lat,
+         longitude: latlng.lng
+      })
+   }
+
+   const [name, setName] = useState<string>(location.state?.orphanage.name)
+   const [about, setAbout] = useState<string>(location.state?.orphanage.about)
+   const [instructions, setInstructions] = useState<string>(location.state?.orphanage.about)
+   const [openingHours, setOpeningHours] = useState<string>(location.state?.orphanage.opening_hours)
 
    const [images, setImages] = useState<File[]>([])
    const [previewImages, setPreviewImages] = useState<Image[]>(
@@ -82,58 +107,103 @@ const UpdateOrphanage: React.FC = () => {
 
    return (
       <ManageOrphanageLayout>
-         <div className="images-wrapper">
-            <label htmlFor="images">Fotos</label>
+         <form className='orphanage-form'>
+            <fieldset>
+               <legend>Dados</legend>
 
-            <div className="images-container">
-               {previewImages?.map((image, index) => (
-                  <div key={index} className='image-wrapper'>
-                     <img src={image.url} alt='Imagem' />
-                     <span
-                        onClick={() => handleRemoveImage(image, index)}
-                     ><FiX color='#FF669D' size={24} /></span>
+               <div className='orphanage-edit-wrapper'>
+                  <Map
+                     zoomControl={false}
+                     center={[
+                        location.state?.orphanage.latitude || 1,
+                        location.state?.orphanage.longitude || 1
+                     ]}
+                     onclick={handleMapClick}
+                     className='orphanage-map'
+                     zoom={6}
+                  >
+                     <TileLayer
+                        url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
+                     />
+                     {position && (
+                        <Marker
+                           interactive={false}
+                           icon={mapIcon}
+                           position={[
+                              position.latitude,
+                              position.longitude
+                           ]}
+                        />
+                     )}
+                  </Map>
+                  <div>
+                     <span>Clique no mapa para alterar a localização</span>
                   </div>
-               ))}
+               </div>
 
-               <label htmlFor='image[]' className="new-image">
-                  <FiPlus size={24} color="#15b6d6" />
-               </label>
-            </div>
+               <Input
+                  labelText='Nome'
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+               />
 
-            <input
-               multiple
-               type='file'
-               id='image[]'
-               className='image-input'
-               onChange={handleSelectFile}
-            />
-         </div>
-         {/* <div className="input-block">
-            <label htmlFor="images">Fotos</label>
+               <Textarea
+                  labelText='Sobre'
+                  labelSubText='Máximo de 300 caracteres'
+                  id='about'
+                  value={about}
+                  onChange={(e) => setAbout(e.target.value)}
+                  maxLength={300}
+               />
 
-            <div className="images-container">
-               {previewImages.map((image, index) => (
-                  <div key={index} className='image-wrapper'>
-                     <img src={image.url} alt={name} />
-                     <span
-                        onClick={() => handleRemoveImage(index)}
-                     ><FiX color='#FF669D' size={24} /></span>
+               <div className="images-wrapper">
+                  <label htmlFor="images">Fotos</label>
+
+                  <div className="images-container">
+                     {previewImages?.map((image, index) => (
+                        <div key={index} className='image-wrapper'>
+                           <img src={image.url} alt='Imagem' />
+                           <span
+                              onClick={() => handleRemoveImage(image, index)}
+                           ><FiX color='#FF669D' size={24} /></span>
+                        </div>
+                     ))}
+
+                     <label htmlFor='image[]' className="new-image">
+                        <FiPlus size={24} color="#15b6d6" />
+                     </label>
                   </div>
-               ))}
 
-               <label htmlFor='image[]' className="new-image">
-                  <FiPlus size={24} color="#15b6d6" />
-               </label>
-            </div>
+                  <input
+                     multiple
+                     type='file'
+                     id='image[]'
+                     className='image-input'
+                     onChange={handleSelectFile}
+                  />
+               </div>
+            </fieldset>
+            <fieldset>
+               <legend>Visitação</legend>
 
-            <input
-               multiple
-               type='file'
-               id='image[]'
-               className='image-input'
-               onChange={handleSelectFile}
-            />
-         </div> */}
+               <Textarea
+                  labelText='Instruções'
+                  labelSubText=''
+                  id='instructions'
+                  value={instructions}
+                  onChange={(e) => setInstructions(e.target.value)}
+               />
+
+               <Input
+                  labelText='Horário das visitas'
+                  value={openingHours}
+                  onChange={(e) => setOpeningHours(e.target.value)}
+               />
+            </fieldset>
+            <Button type='submit'>
+               Confirmar
+            </Button>
+         </form>
       </ManageOrphanageLayout>
    )
 }

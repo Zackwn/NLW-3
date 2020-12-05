@@ -1,0 +1,72 @@
+form.orphanage-form {
+   display: flex;
+
+   flex-direction: column;
+}
+
+form.orphanage-form .orphanage-edit-wrapper {
+   width: 100%;
+   background-color: #F5F8FA;
+
+   border: 1px solid rgb(211 226 229);
+   border-radius: 20px;
+}
+
+form.orphanage-form .orphanage-edit-wrapper div {
+   width: 100%;
+   padding: 20px;
+
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+form.orphanage-form .orphanage-edit-wrapper div span {
+   color: #0089A5;
+
+   font-style: normal;
+   font-weight: bold;
+   font-size: 14px;
+   line-height: 25px;
+}
+
+form.orphanage-form .orphanage-edit-wrapper .orphanage-map {
+   border: 0;
+}
+
+form.orphanage-form .orphanage-map {
+   width: 100%;
+   height: 280px;
+
+   border-radius: 20px;
+   border: 1px solid rgb(211 226 229);
+}
+
+form.orphanage-form fieldset {
+   border: 0;
+
+   display: flex;
+   flex-direction: column;
+   gap: 40px;
+}
+
+form.orphanage-form fieldset+fieldset {
+   margin-top: 40px;
+}
+
+form.orphanage-form fieldset+button {
+   margin-top: 40px;
+}
+
+form.orphanage-form fieldset legend {
+   width: 100%;
+   border-bottom: 1px solid rgb(211 226 229);
+
+   font-size: 32px;
+   line-height: 34px;
+   color: rgb(92 133 153);
+   font-weight: 700;
+
+   padding-bottom: 24px;
+   margin-bottom: 40px;
+}
