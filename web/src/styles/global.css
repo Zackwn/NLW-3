@@ -15,3 +15,9 @@ button,
 textarea {
    font: 600 18px Nunito, sans-serif;
 }
+
+.leaflet-control-attribution {
+   display: none !important;
+   cursor: none !important;
+   pointer-events: none !important;
+}

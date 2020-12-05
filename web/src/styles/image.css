@@ -1,4 +1,7 @@
-/* .images-wrapper {} */
+.images-wrapper {
+   overflow: hidden;
+   width: 100%;
+}
 
 .images-wrapper label {
    display: flex;
