@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import { FiX, FiPlus } from 'react-icons/fi'
 import { useHistory } from 'react-router-dom'
 import { OrphanageInterface } from '../@types/orphanage'
@@ -10,11 +10,17 @@ interface Image {
 }
 
 const UpdateOrphanage: React.FC = () => {
-   const { location } = useHistory<{ orphanage: OrphanageInterface }>()
+   const { location, push } = useHistory<{ orphanage: OrphanageInterface }>()
+
+   useEffect(() => {
+      if (!location?.state) {
+         push('/dashboard/orphanages')
+      }
+   }, [location, location.state, push])
 
    const [images, setImages] = useState<File[]>([])
    const [previewImages, setPreviewImages] = useState<Image[]>(
-      location.state.orphanage.images.map(image => ({
+      location.state?.orphanage.images.map(image => ({
          url: image.url,
          isNew: false
       }))
@@ -80,7 +86,7 @@ const UpdateOrphanage: React.FC = () => {
             <label htmlFor="images">Fotos</label>
 
             <div className="images-container">
-               {previewImages.map((image, index) => (
+               {previewImages?.map((image, index) => (
                   <div key={index} className='image-wrapper'>
                      <img src={image.url} alt='Imagem' />
                      <span
