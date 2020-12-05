@@ -1,12 +1,14 @@
 div#manage-orphanage-layout {
    width: 100vw;
    height: 100vh;
+   overflow-x: hidden;
 
    display: flex;
 }
 
 main#manage-orphanage-container {
    width: 700px;
+   height: fit-content;
 
    margin: 64px auto;
    padding: 64px 80px;
