@@ -14,10 +14,6 @@ div.orphanage-modal .orphanage-modal-map .leaflet-container {
    border-radius: 20px;
 }
 
-div.orphanage-modal .orphanage-modal-map .leaflet-container .leaflet-control-attribution {
-   display: none;
-}
-
 div.orphanage-modal div.orphanage-modal-detail {
    display: flex;
    align-self: center;
