@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { getRepository } from 'typeorm'
+import { getRepository, getManager, DeleteResult } from 'typeorm'
 import Orphanage from '../models/Orphanages'
 import OrphanageView from '../views/orphanages_view'
 import OrphanageValidation from '../validation/orphanages'
@@ -51,14 +51,18 @@ export class OrphanagesController {
             open_on_weekends
         }
 
-        const orphanageRepository = getRepository(Orphanage)
-        const imageRepository = getRepository(Image)
+        let deleteImagesResult: Promise<DeleteResult>[]
 
-        await orphanageRepository.update({ id }, updateOrphanageData)
+        await getManager().transaction(async runInTransaction => {
+            const orphanageRepository = runInTransaction.getRepository(Orphanage)
+            const imageRepository = runInTransaction.getRepository(Image)
 
-        await imageRepository.insert(new_images)
-        let deleteImagesResult = removedImages.map(image => {
-            return imageRepository.delete(image.id)
+            await orphanageRepository.update(id, updateOrphanageData)
+
+            await imageRepository.insert(new_images)
+            deleteImagesResult = removedImages.map(image => {
+                return imageRepository.delete(image.id)
+            })
         })
 
         await Promise.all(deleteImagesResult)
