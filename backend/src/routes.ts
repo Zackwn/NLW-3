@@ -39,7 +39,7 @@ routes.use(authMiddleware)
 
 /* Create and Update */
 routes.post('/orphanage', upload.array('images'), orphanagesController.create)
-// routes.put('/orphanage', orphanagesController.update)
+routes.put('/orphanage/:id', upload.array('new_images'), orphanagesController.update)
 
 /* Manage Orphanages */
 routes.get('/user/orphanages/', manageOrphanagesController.getUserOrphanages)

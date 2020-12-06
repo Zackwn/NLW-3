@@ -3,8 +3,71 @@ import { getRepository } from 'typeorm'
 import Orphanage from '../models/Orphanages'
 import OrphanageView from '../views/orphanages_view'
 import OrphanageValidation from '../validation/orphanages'
+import deleteImages from '../helpers/deleteImages'
+import { AppError } from '../errors/appError'
+import Image from '../models/Images'
 
 export class OrphanagesController {
+    async update(req: Request, res: Response) {
+        // get the orphanage id and parse to number
+        let id: number | string = req.params.id
+
+        id = Number(id)
+
+        if (isNaN(id)) {
+            throw new AppError(400)
+        }
+
+        // get removed images id and parse to json
+        const { removed_images_id } = req.body
+
+        const removedImages: Image[] = JSON.parse(removed_images_id)
+
+        // get orphanage data
+        const {
+            name,
+            latitude,
+            longitude,
+            about,
+            instructions,
+            opening_hours,
+            open_on_weekends
+        } = req.body
+
+        // get and parse multer files to images entity format
+        const requestImages = req.files as Express.Multer.File[]
+
+        const new_images = requestImages.map(image => {
+            return { path: image.filename, orphanage_id: id } as Image
+        })
+
+        const updateOrphanageData = {
+            name,
+            latitude,
+            longitude,
+            about,
+            instructions,
+            opening_hours,
+            open_on_weekends
+        }
+
+        const orphanageRepository = getRepository(Orphanage)
+        const imageRepository = getRepository(Image)
+
+        await orphanageRepository.update({ id }, updateOrphanageData)
+
+        await imageRepository.insert(new_images)
+        let deleteImagesResult = removedImages.map(image => {
+            return imageRepository.delete(image.id)
+        })
+
+        await Promise.all(deleteImagesResult)
+
+        deleteImages.many(removedImages)
+
+        return res.status(204).send()
+    }
+
     async show(req: Request, res: Response) {
         const { id } = req.params
 
