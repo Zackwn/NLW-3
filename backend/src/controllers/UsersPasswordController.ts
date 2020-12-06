@@ -70,9 +70,7 @@ export class UsersPasswordController {
 
         const hashNewPassword = await hashPassword(newPassword)
 
-        user.password = hashNewPassword
-
-        await userRepository.save(user)
+        await userRepository.update({ id: user.id }, { password: hashNewPassword })
 
         return res.send()
     }
