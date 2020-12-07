@@ -1,4 +1,5 @@
 export interface ImageInterface {
    id: number
-   url: string
+   url: string,
+   path: string
 }
