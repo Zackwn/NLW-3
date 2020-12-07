@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { FiX, FiPlus } from 'react-icons/fi'
 import { useHistory } from 'react-router-dom'
 import ManageOrphanageLayout from '../components/Orphanage/ManageOrphanageLayout'
@@ -6,15 +6,21 @@ import { Map, Marker, TileLayer } from 'react-leaflet'
 
 import { OrphanageInterface } from '../@types/orphanage'
 import { PositionInterface } from '../@types/position'
+import { ImageInterface } from '../@types/image'
 import mapIcon from '../utils/mapIcon'
 import { LeafletMouseEvent } from 'leaflet'
 import Input from '../components/Input'
 import Textarea from '../components/Textarea'
 import Button from '../components/Button'
+import api from '../services/api'
 
-interface Image {
-   url: string,
+interface PreviewImage extends ImageInterface {
    isNew: boolean
+}
+
+interface RemovedImages {
+   path: string
+   id: number
 }
 
 const UpdateOrphanage: React.FC = () => {
@@ -43,16 +49,20 @@ const UpdateOrphanage: React.FC = () => {
    const [instructions, setInstructions] = useState<string>(location.state?.orphanage.about)
    const [openingHours, setOpeningHours] = useState<string>(location.state?.orphanage.opening_hours)
 
+   const [openOnWeekends, setOpenOnWeekends] = useState<boolean>(location.state?.orphanage.open_on_weekends)
+
    const [images, setImages] = useState<File[]>([])
-   const [previewImages, setPreviewImages] = useState<Image[]>(
+   const [previewImages, setPreviewImages] = useState<PreviewImage[]>(
       location.state?.orphanage.images.map(image => ({
          url: image.url,
-         isNew: false
+         id: image.id,
+         isNew: false,
+         path: image.path
       }))
    )
-   const [removedImagesIds, setRemovedImagesIds] = useState<number[]>([])
+   const [removedImages, setRemovedImages] = useState<RemovedImages[]>([])
 
-   function handleRemoveImage(image: Image, imageIndex: number) {
+   function handleRemoveImage(image: PreviewImage, imageIndex: number) {
       if (image.isNew) {
          console.log({ imageIndex })
          const filteredImages = images.filter((_, index) => {
@@ -70,7 +80,11 @@ const UpdateOrphanage: React.FC = () => {
          setPreviewImages(filteredPreviewImages)
       } else {
          console.log('delete not new')
-         setRemovedImagesIds([...removedImagesIds, imageIndex])
+         console.log(previewImages[imageIndex])
+         setRemovedImages([...removedImages, {
+            id: previewImages[imageIndex].id,
+            path: previewImages[imageIndex].path
+         }])
 
          const filteredPreviewImages = previewImages.filter((_, index) => {
             return index !== imageIndex
@@ -94,7 +108,7 @@ const UpdateOrphanage: React.FC = () => {
          return {
             url: URL.createObjectURL(image),
             isNew: true
-         } as Image
+         } as PreviewImage
       })
 
       setPreviewImages(prevPreviewImages => {
@@ -105,9 +119,41 @@ const UpdateOrphanage: React.FC = () => {
       })
    }
 
+   async function handleSubmit(event: FormEvent) {
+      event.preventDefault()
+
+      const data = new FormData()
+
+      data.append('name', name)
+      data.append('latitude', String(position.latitude))
+      data.append('longitude', String(position.longitude))
+      data.append('about', about)
+      data.append('instructions', instructions)
+      data.append('opening_hours', openingHours)
+      data.append('open_on_weekends', String(openOnWeekends))
+
+      data.append('removed_images_id', JSON.stringify(removedImages))
+
+      images.forEach(image => {
+         data.append('new_images', image)
+      })
+
+      // let log: any = []
+      // data.forEach((e) => log.push(e))
+      // console.log({ data: log })
+
+      const orphanageID = location.state?.orphanage.id
+
+      const response = await api.put(`/orphanage/${orphanageID}`, data, {
+         headers: { 'Content-Type': 'multipart/form-data' }
+      })
+
+      console.log(response)
+   }
+
    return (
       <ManageOrphanageLayout>
-         <form className='orphanage-form'>
+         <form className='orphanage-form' onSubmit={handleSubmit}>
             <fieldset>
                <legend>Dados</legend>
 
@@ -199,6 +245,29 @@ const UpdateOrphanage: React.FC = () => {
                   value={openingHours}
                   onChange={(e) => setOpeningHours(e.target.value)}
                />
+
+               <div className="open-on-weekends-choices">
+                  <label>Atende fim de semana</label>
+
+                  <div>
+                     <button
+                        type="button"
+                        onClick={() => setOpenOnWeekends(true)}
+                        className={openOnWeekends ? 'active-yes' : ''}
+                     >
+                        Sim
+                     </button>
+
+                     <button
+                        type="button"
+                        onClick={() => setOpenOnWeekends(false)}
+                        className={openOnWeekends ? '' : 'active-no'}
+                     >
+                        Não
+                     </button>
+                  </div>
+               </div>
+
             </fieldset>
             <Button type='submit'>
                Confirmar
