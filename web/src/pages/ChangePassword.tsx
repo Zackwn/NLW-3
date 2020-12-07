@@ -45,7 +45,7 @@ const ChangePassword: React.FC = () => {
          toast({ message: 'Senha trocada com sucesso!', type: 'success' })
 
          if (response.status === 200) {
-            history.push('/')
+            history.push('/dashboard/orphanages')
          }
       } catch (error) {
          if (error.response.data.error) {
