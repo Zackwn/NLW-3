@@ -60,12 +60,13 @@ export class OrphanagesController {
             await orphanageRepository.update(id, updateOrphanageData)
 
             await imageRepository.insert(new_images)
+
             deleteImagesResult = removedImages.map(image => {
                 return imageRepository.delete(image.id)
             })
-        })
 
-        await Promise.all(deleteImagesResult)
+            await Promise.all(deleteImagesResult)
+        })
 
         deleteImages.many(removedImages)
 
