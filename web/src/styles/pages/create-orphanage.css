@@ -118,7 +118,6 @@ form.create-orphanage-form .input-block .button-select button:first-child {
 
 form.create-orphanage-form .input-block .button-select button:last-child {
    border-radius: 0 20px 20px 0;
-   border-left: 0;
 }
 
 form.create-orphanage-form button.confirm-button {
