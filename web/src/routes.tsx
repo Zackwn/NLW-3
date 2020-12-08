@@ -53,13 +53,13 @@ const Routes: React.FC = () => {
                   <Route path='/change-password/:token' component={ChangePassword} />
 
                   <Route path='/orphanages' exact component={OrphanagesMap} />
+                  <Route path='/orphanages/detail/:id' exact component={Orphanage} />
 
                   <Redirect exact from='/dashboard' to={dashboardRoutes.registeredOrphanages} />
-                  <Route path='/dashboard' component={Dashboard} />
+                  <Route isPrivate path='/dashboard' component={Dashboard} />
 
-                  <Route path='/orphanages/create' exact component={CreateOrphanage} />
-                  <Route path='/orphanages/update' exact component={UpdateOrphanage} />
-                  <Route path='/orphanages/:id' exact component={Orphanage} />
+                  <Route isPrivate path='/orphanages/create' exact component={CreateOrphanage} />
+                  <Route isPrivate path='/orphanages/update' exact component={UpdateOrphanage} />
                </Switch>
             </ToastProvider>
          </AuthProvider>

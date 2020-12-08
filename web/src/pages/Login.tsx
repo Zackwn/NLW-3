@@ -5,12 +5,13 @@ import Checkbox from '../components/Checkbox'
 import Form from '../components/Form'
 import Input from '../components/Input'
 import AuthContext from '../context/auth/AuthContext'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 import '../styles/pages/login.css'
 import ToastContext from '../context/toast/ToastContext'
 
 const Login: React.FC = () => {
+   const history = useHistory()
    const { handleLogin } = useContext(AuthContext)
    const { toast } = useContext(ToastContext)
 
@@ -30,6 +31,7 @@ const Login: React.FC = () => {
          setEmailError(undefined)
          setPasswordError(undefined)
          toast({ message: 'Login feito com sucesso!', type: 'success' })
+         history.push('/dashboard/orphanages/')
       } catch (error) {
          const { fieldErrors } = error.response.data
          if (fieldErrors) {
@@ -47,7 +49,7 @@ const Login: React.FC = () => {
             toast({ message: 'Algo deu errado, tente novamente', type: 'error' })
          }
       }
-   }, [rememberUser, handleLogin, email, password, toast, setPasswordError])
+   }, [rememberUser, handleLogin, email, password, toast, history])
 
    return (
       <div>

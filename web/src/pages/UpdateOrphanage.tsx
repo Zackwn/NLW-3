@@ -132,7 +132,7 @@ const UpdateOrphanage: React.FC = () => {
       data.append('opening_hours', openingHours)
       data.append('open_on_weekends', String(openOnWeekends))
 
-      data.append('removed_images_id', JSON.stringify(removedImages))
+      data.append('removed_images', JSON.stringify(removedImages))
 
       images.forEach(image => {
          data.append('new_images', image)
