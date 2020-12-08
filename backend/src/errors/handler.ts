@@ -15,7 +15,13 @@ const errorHandler: ErrorRequestHandler = (error, request, response, next) => {
         let errors: IValidationErrors = {}
 
         error.inner.forEach(err => {
-            errors[err.path] = err.errors
+            let errorPath: string
+            if ((err.params as any)?.path) {
+                errorPath = (err.params as any)?.path
+            } else {
+                errorPath = err.path
+            }
+            errors[errorPath] = err.errors
         })
 
         return response.status(400).json({

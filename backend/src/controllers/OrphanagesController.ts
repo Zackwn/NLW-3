@@ -19,9 +19,16 @@ export class OrphanagesController {
         }
 
         // get removed images id and parse to json
-        const { removed_images_id } = req.body
+        const { removed_images } = req.body
 
-        const removedImages: Image[] = JSON.parse(removed_images_id)
+        let removedImages: Image[]
+        try {
+            removedImages = JSON.parse(removed_images)
+        } catch (e) {
+            throw new AppError(400, {
+                error: 'Invalid JSON'
+            })
+        }
 
         // get orphanage data
         const {
@@ -50,6 +57,20 @@ export class OrphanagesController {
             opening_hours,
             open_on_weekends: open_on_weekends === "true"
         }
+
+        await OrphanageValidation.update.validate({
+            ...updateOrphanageData,
+            removed_images: removedImages,
+            new_images
+        }, {
+            abortEarly: false
+        })
+
+        console.log({
+            updateOrphanageData,
+            removedImages,
+            new_images
+        })
 
         let deleteImagesResult: Promise<DeleteResult>[]
 
