@@ -1,18 +1,19 @@
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
-import { FiX, FiPlus } from 'react-icons/fi'
-import { useHistory } from 'react-router-dom'
-import ManageOrphanageLayout from '../components/Orphanage/ManageOrphanageLayout'
+import { LeafletMouseEvent } from 'leaflet'
+import React, { ChangeEvent, useContext, useEffect, useState } from 'react'
+import { FiPlus, FiX } from 'react-icons/fi'
 import { Map, Marker, TileLayer } from 'react-leaflet'
-
+import { useHistory } from 'react-router-dom'
+import { ImageInterface } from '../@types/image'
 import { OrphanageInterface } from '../@types/orphanage'
 import { PositionInterface } from '../@types/position'
-import { ImageInterface } from '../@types/image'
-import mapIcon from '../utils/mapIcon'
-import { LeafletMouseEvent } from 'leaflet'
-import Input from '../components/Input'
-import Textarea from '../components/Textarea'
 import Button from '../components/Button'
+import FormController from '../components/FormController'
+import Input from '../components/Input'
+import ManageOrphanageLayout from '../components/Orphanage/ManageOrphanageLayout'
+import Textarea from '../components/Textarea'
+import ToastContext from '../context/toast/ToastContext'
 import api from '../services/api'
+import mapIcon from '../utils/mapIcon'
 
 interface PreviewImage extends ImageInterface {
    isNew: boolean
@@ -23,8 +24,11 @@ interface RemovedImages {
    id: number
 }
 
+interface FormError { [key: string]: string }
+
 const UpdateOrphanage: React.FC = () => {
    const { location, push } = useHistory<{ orphanage: OrphanageInterface }>()
+   const { toast } = useContext(ToastContext)
 
    useEffect(() => {
       if (!location?.state) {
@@ -32,24 +36,12 @@ const UpdateOrphanage: React.FC = () => {
       }
    }, [location, location.state, push])
 
+   const [openOnWeekends, setOpenOnWeekends] = useState<boolean>(location.state?.orphanage.open_on_weekends)
+
    const [position, setPosition] = useState<PositionInterface>({
       latitude: location.state?.orphanage.latitude || 1,
       longitude: location.state?.orphanage.longitude || 1
    })
-
-   function handleMapClick({ latlng }: LeafletMouseEvent) {
-      setPosition({
-         latitude: latlng.lat,
-         longitude: latlng.lng
-      })
-   }
-
-   const [name, setName] = useState<string>(location.state?.orphanage.name)
-   const [about, setAbout] = useState<string>(location.state?.orphanage.about)
-   const [instructions, setInstructions] = useState<string>(location.state?.orphanage.about)
-   const [openingHours, setOpeningHours] = useState<string>(location.state?.orphanage.opening_hours)
-
-   const [openOnWeekends, setOpenOnWeekends] = useState<boolean>(location.state?.orphanage.open_on_weekends)
 
    const [images, setImages] = useState<File[]>([])
    const [previewImages, setPreviewImages] = useState<PreviewImage[]>(
@@ -61,6 +53,13 @@ const UpdateOrphanage: React.FC = () => {
       }))
    )
    const [removedImages, setRemovedImages] = useState<RemovedImages[]>([])
+
+   function handleMapClick({ latlng }: LeafletMouseEvent) {
+      setPosition({
+         latitude: latlng.lat,
+         longitude: latlng.lng
+      })
+   }
 
    function handleRemoveImage(image: PreviewImage, imageIndex: number) {
       if (image.isNew) {
@@ -119,161 +118,199 @@ const UpdateOrphanage: React.FC = () => {
       })
    }
 
-   async function handleSubmit(event: FormEvent) {
-      event.preventDefault()
-
-      const data = new FormData()
-
-      data.append('name', name)
-      data.append('latitude', String(position.latitude))
-      data.append('longitude', String(position.longitude))
-      data.append('about', about)
-      data.append('instructions', instructions)
-      data.append('opening_hours', openingHours)
-      data.append('open_on_weekends', String(openOnWeekends))
-
-      data.append('removed_images', JSON.stringify(removedImages))
-
-      images.forEach(image => {
-         data.append('new_images', image)
-      })
-
-      // let log: any = []
-      // data.forEach((e) => log.push(e))
-      // console.log({ data: log })
-
-      const orphanageID = location.state?.orphanage.id
-
-      const response = await api.put(`/orphanage/${orphanageID}`, data, {
-         headers: { 'Content-Type': 'multipart/form-data' }
-      })
-
-      console.log(response)
-   }
-
    return (
       <ManageOrphanageLayout>
-         <form className='orphanage-form' onSubmit={handleSubmit}>
-            <fieldset>
-               <legend>Dados</legend>
+         <FormController
+            className='orphanage-form'
+            initialValues={{
+               name: location.state?.orphanage.name,
+               about: location.state?.orphanage.about,
+               instructions: location.state?.orphanage.instructions,
+               opening_hours: location.state?.orphanage.opening_hours
+            }}
+            initialErrors={{}}
+            onSubmit={async (data, setErrors) => {
+               console.log({ position, openOnWeekends, previewImages, removedImages })
+               console.log(data)
 
-               <div className='orphanage-edit-wrapper'>
-                  <Map
-                     zoomControl={false}
-                     center={[
-                        location.state?.orphanage.latitude || 1,
-                        location.state?.orphanage.longitude || 1
-                     ]}
-                     onclick={handleMapClick}
-                     className='orphanage-map'
-                     zoom={6}
-                  >
-                     <TileLayer
-                        url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
-                     />
-                     {position && (
-                        <Marker
-                           interactive={false}
-                           icon={mapIcon}
-                           position={[
-                              position.latitude,
-                              position.longitude
-                           ]}
-                        />
-                     )}
-                  </Map>
-                  <div>
-                     <span>Clique no mapa para alterar a localização</span>
-                  </div>
-               </div>
+               const formData = new FormData()
 
-               <Input
-                  labelText='Nome'
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-               />
+               formData.append('name', data.name)
+               formData.append('about', data.about)
+               formData.append('instructions', data.instructions)
+               formData.append('opening_hours', data.opening_hours)
 
-               <Textarea
-                  labelText='Sobre'
-                  labelSubText='Máximo de 300 caracteres'
-                  id='about'
-                  value={about}
-                  onChange={(e) => setAbout(e.target.value)}
-                  maxLength={300}
-               />
+               formData.append('latitude', String(position.latitude))
+               formData.append('longitude', String(position.longitude))
+               formData.append('open_on_weekends', String(openOnWeekends))
+               formData.append('removed_images', JSON.stringify(removedImages))
 
-               <div className="images-wrapper">
-                  <label htmlFor="images">Fotos</label>
+               images.forEach(image => {
+                  formData.append('new_images', image)
+               })
 
-                  <div className="images-container">
-                     {previewImages?.map((image, index) => (
-                        <div key={index} className='image-wrapper'>
-                           <img src={image.url} alt='Imagem' />
-                           <span
-                              onClick={() => handleRemoveImage(image, index)}
-                           ><FiX color='#FF669D' size={24} /></span>
+               const orphanageID = location.state?.orphanage.id
+
+               try {
+                  await api.put(`/orphanage/${orphanageID}`, formData, {
+                     headers: { 'Content-Type': 'multipart/form-data' }
+                  })
+
+                  toast({ message: `${data.name} atualizado com sucesso!`, type: 'success' })
+
+                  push('/dashboard/orphanages')
+               } catch (error) {
+                  console.log(error.response)
+
+                  const responseErrors = error?.response?.data?.errors as { [key: string]: string[] }
+
+                  if (!responseErrors) {
+                     return
+                  }
+
+                  let errors: FormError = {}
+
+                  Object.entries(responseErrors).forEach(error => {
+                     const key = error[0]
+                     const value = error[1][0] // first string
+                     errors[key] = value
+                  })
+
+                  console.log({ errors })
+
+                  setErrors(errors)
+               }
+            }}
+         >
+            {({ data, errors }) => {
+               return (
+                  <>
+                     <fieldset>
+                        <legend>Dados</legend>
+
+                        <div className='orphanage-edit-wrapper'>
+                           <Map
+                              zoomControl={false}
+                              center={[
+                                 location.state?.orphanage.latitude || 1,
+                                 location.state?.orphanage.longitude || 1
+                              ]}
+                              onclick={handleMapClick}
+                              className='orphanage-map'
+                              zoom={6}
+                           >
+                              <TileLayer
+                                 url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
+                              />
+                              {position && (
+                                 <Marker
+                                    interactive={false}
+                                    icon={mapIcon}
+                                    position={[
+                                       position.latitude,
+                                       position.longitude
+                                    ]}
+                                 />
+                              )}
+                           </Map>
+                           <div>
+                              <span>Clique no mapa para alterar a localização</span>
+                           </div>
                         </div>
-                     ))}
 
-                     <label htmlFor='image[]' className="new-image">
-                        <FiPlus size={24} color="#15b6d6" />
-                     </label>
-                  </div>
+                        <Input
+                           labelText='Nome'
+                           defaultValue={data.name}
+                           onChange={(e) => { data.name = e.target.value }}
+                           error={errors.name}
+                        />
 
-                  <input
-                     multiple
-                     type='file'
-                     id='image[]'
-                     className='image-input'
-                     onChange={handleSelectFile}
-                  />
-               </div>
-            </fieldset>
-            <fieldset>
-               <legend>Visitação</legend>
+                        <Textarea
+                           labelText='Sobre'
+                           labelSubText='Máximo de 300 caracteres'
+                           id='about'
+                           defaultValue={data.about}
+                           onChange={(e) => { data.about = e.target.value }}
+                           maxLength={300}
+                        />
 
-               <Textarea
-                  labelText='Instruções'
-                  labelSubText=''
-                  id='instructions'
-                  value={instructions}
-                  onChange={(e) => setInstructions(e.target.value)}
-               />
+                        <div className="images-wrapper">
+                           <label htmlFor="images">Fotos</label>
 
-               <Input
-                  labelText='Horário das visitas'
-                  value={openingHours}
-                  onChange={(e) => setOpeningHours(e.target.value)}
-               />
+                           <div className="images-container">
+                              {previewImages?.map((image, index) => (
+                                 <div key={index} className='image-wrapper'>
+                                    <img src={image.url} alt='Imagem' />
+                                    <span
+                                       onClick={() => handleRemoveImage(image, index)}
+                                    ><FiX color='#FF669D' size={24} /></span>
+                                 </div>
+                              ))}
 
-               <div className="open-on-weekends-choices">
-                  <label>Atende fim de semana</label>
+                              <label htmlFor='image[]' className="new-image">
+                                 <FiPlus size={24} color="#15b6d6" />
+                              </label>
+                           </div>
 
-                  <div>
-                     <button
-                        type="button"
-                        onClick={() => setOpenOnWeekends(true)}
-                        className={openOnWeekends ? 'active-yes' : ''}
-                     >
-                        Sim
-                     </button>
+                           <input
+                              multiple
+                              type='file'
+                              id='image[]'
+                              className='image-input'
+                              onChange={handleSelectFile}
+                           />
+                        </div>
+                     </fieldset>
+                     <fieldset>
+                        <legend>Visitação</legend>
 
-                     <button
-                        type="button"
-                        onClick={() => setOpenOnWeekends(false)}
-                        className={openOnWeekends ? '' : 'active-no'}
-                     >
-                        Não
-                     </button>
-                  </div>
-               </div>
+                        <Textarea
+                           labelText='Instruções'
+                           labelSubText=''
+                           id='instructions'
+                           defaultValue={data.instructions}
+                           onChange={(e) => { data.instructions = e.target.value }}
+                        />
 
-            </fieldset>
-            <Button type='submit'>
-               Confirmar
-            </Button>
-         </form>
-      </ManageOrphanageLayout>
+                        <Input
+                           labelText='Horário das visitas'
+                           defaultValue={data.opening_hours}
+                           onChange={(e) => { data.opening_hours = e.target.value }}
+                           error={errors.opening_hours}
+                        />
+
+                        <div className="open-on-weekends-choices">
+                           <label>Atende fim de semana</label>
+
+                           <div>
+                              <button
+                                 type="button"
+                                 onClick={() => setOpenOnWeekends(true)}
+                                 className={openOnWeekends ? 'active-yes' : ''}
+                              >
+                                 Sim
+                        </button>
+
+                              <button
+                                 type="button"
+                                 onClick={() => setOpenOnWeekends(false)}
+                                 className={openOnWeekends ? '' : 'active-no'}
+                              >
+                                 Não
+                        </button>
+                           </div>
+                        </div>
+
+                     </fieldset>
+                     <Button type='submit'>
+                        Confirmar
+                     </Button>
+                  </>
+               )
+            }}
+
+         </FormController>
+      </ManageOrphanageLayout >
    )
 }
 
