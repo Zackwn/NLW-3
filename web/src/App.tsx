@@ -2,6 +2,7 @@ import React from 'react'
 import Routes from './routes'
 
 import './styles/image.css'
+import './styles/components/text/error.css'
 import './styles/pages/orphanage/form.css'
 
 import './styles/global.css'

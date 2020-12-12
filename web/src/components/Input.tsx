@@ -1,6 +1,6 @@
 import React from 'react';
 
-import '../styles/components/input.css'
+import '../styles/components/text/input.css'
 
 interface InputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
    labelText: string,
@@ -9,15 +9,14 @@ interface InputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<H
 
 const Input: React.FC<InputProps> = ({ children, labelText, error, ...inputProps }) => {
    return (
-      <div className='input-component'>
+      <div className={`text-component input-component${error ? ' with-error' : ''}`}>
          <label
-            className={error ? 'with-error' : ''}
          >{labelText}</label>
          <input
-            className={error ? 'with-error' : ''}
+            placeholder=' '
             {...inputProps}
          />
-         {error ? <span>{error}</span> : null}
+         {error ? <span className='text-error'>{error}</span> : null}
       </div>
    )
 }
