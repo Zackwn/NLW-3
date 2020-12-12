@@ -232,6 +232,7 @@ const UpdateOrphanage: React.FC = () => {
                            defaultValue={data.about}
                            onChange={(e) => { data.about = e.target.value }}
                            maxLength={300}
+                           error={errors.about}
                         />
 
                         <div className="images-wrapper">
@@ -270,6 +271,7 @@ const UpdateOrphanage: React.FC = () => {
                            id='instructions'
                            defaultValue={data.instructions}
                            onChange={(e) => { data.instructions = e.target.value }}
+                           error={errors.instructions}
                         />
 
                         <Input

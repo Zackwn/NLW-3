@@ -26,10 +26,6 @@
    line-height: 28px;
 }
 
-.textarea-component textarea:not(:placeholder-shown) {
-   border: 1px solid #A1E9C5;
-}
-
 .textarea-component textarea::-webkit-scrollbar {
    width: 10px;
 }

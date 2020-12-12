@@ -39,28 +39,3 @@ div.input-component input {
 
    color: #5C8599;
 }
-
-div.input-component input:not([value=""]) {
-   border: 1px solid #A1E9C5;
-}
-
-div.input-component label.with-error {
-   color: #FF669D;
-}
-
-div.input-component input.with-error {
-   border: 1px solid #FF669D;
-
-
-   background-color: rgba(255, 102, 158, 0.039);
-}
-
-div.input-component span {
-   color: #FF669D;
-
-   align-self: flex-start;
-
-   font-size: medium;
-
-   margin-top: 5px;
-}
