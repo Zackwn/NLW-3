@@ -1,22 +1,13 @@
-import { Request, Response } from 'express'
 import {
-    hash as generatePasswordHash,
-    verify as verifyPassword
+    hash as generatePasswordHash
 } from 'argon2'
+import { Request, Response } from 'express'
 import { getRepository } from 'typeorm'
 import User from '../models/Users'
-import { JWTHelperInterface } from '../helpers/jwt'
 import UserValidation from '../validation/user'
 import UserView from '../views/users_view'
-import { AppError } from '../errors/appError'
 
 export class UsersController {
-    jwtHelper: JWTHelperInterface
-
-    constructor(jwtHelper: JWTHelperInterface) {
-        this.jwtHelper = jwtHelper
-    }
-
     async create(req: Request, res: Response) {
         const {
             email,
@@ -46,38 +37,5 @@ export class UsersController {
             message: 'Successfuly created!',
             user: UserView.render(newUser)
         })
-    }
-
-    async login(req: Request, res: Response) {
-        const { email, password } = req.body
-
-        const userRepository = getRepository(User)
-
-        // verify if user exists
-        const user = await userRepository.findOne({ where: { email } })
-
-        if (!user) {
-            throw new AppError(400, {
-                fieldErrors: {
-                    email: 'Nenhum usuário cadastrado com esse email'
-                }
-            })
-        }
-
-        // verify if password is correct
-        const isPasswordCorrect = await verifyPassword(user.password, password)
-
-        if (!isPasswordCorrect) {
-            throw new AppError(400, {
-                fieldErrors: {
-                    password: 'Senha incorreta'
-                }
-            })
-        }
-
-        // login user
-        const token = this.jwtHelper.sign<userPayload>({ userId: user.id })
-
-        return res.json(token)
     }
 }

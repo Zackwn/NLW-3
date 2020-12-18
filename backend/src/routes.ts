@@ -11,20 +11,27 @@ import { UsersController } from './controllers/UsersController'
 import authMiddleware from './middlewares/auth'
 import { UsersPasswordController } from './controllers/UsersPasswordController'
 import { ManageOrphanagesController } from './controllers/ManageOrphanageController'
+import { UsersSessionController } from './controllers/UsersSessionController'
 
 const jwtHelper = new JWTHelper()
 
 const orphanagesController = new OrphanagesController()
 const manageOrphanagesController = new ManageOrphanagesController()
-const usersController = new UsersController(jwtHelper)
+const usersController = new UsersController()
 const usersPassword = new UsersPasswordController()
+const usersSessionController = new UsersSessionController(jwtHelper)
 
 const routes = Router()
 const upload = multer(multerConfig)
 
 /* Users */
 routes.post('/user', (req, res) => usersController.create(req, res))
-routes.post('/user/login', (req, res) => usersController.login(req, res))
+routes.post('/user/login', (req, res) => usersSessionController.authenticate(req, res))
+routes.post(
+    '/user/refresh-token',
+    authMiddleware, // need a valid token to refresh
+    (req, res) => usersSessionController.refreshToken(req, res)
+)
 
 /* User Password */
 routes.post('/user/forgot-password', (req, res) => usersPassword.forgotPassword(req, res))
