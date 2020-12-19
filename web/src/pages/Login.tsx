@@ -9,6 +9,7 @@ import { Link, useHistory } from 'react-router-dom'
 
 import '../styles/pages/login.css'
 import ToastContext from '../context/toast/ToastContext'
+import api from '../services/api'
 
 const Login: React.FC = () => {
    const history = useHistory()
@@ -25,9 +26,10 @@ const Login: React.FC = () => {
    const handleSubmit = useCallback(async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault()
 
-      console.log({ rememberUser })
       try {
+         console.log(api.defaults.headers['authorization'])
          await handleLogin(email, password, rememberUser)
+         console.log(api.defaults.headers['authorization'])
          setEmailError(undefined)
          setPasswordError(undefined)
          toast({ message: 'Login feito com sucesso!', type: 'success' })

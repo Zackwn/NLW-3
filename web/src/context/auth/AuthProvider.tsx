@@ -12,23 +12,30 @@ const AuthProvider: React.FC = ({ children }) => {
    const [isLoading, setIsLoading] = useState(true)
 
    useEffect(() => {
-      if (token) {
-         setIsAuthenticated(true)
-         api.defaults.headers['authorization'] = `Bearer ${token}`
+      async function refreshToken() {
+         if (token) {
+            api.defaults.headers['authorization'] = `Bearer ${token}`
+            setIsAuthenticated(true)
+         }
+
+         setIsLoading(false)
       }
-      setIsLoading(false)
+
+      refreshToken()
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [])
 
-   async function handleLogin(email: string, password: string, isToRememberUser: boolean) {
+   async function handleLogin(email: string, password: string, isToRememberUser: boolean): Promise<void> {
       const response = await api.post('/user/login', {
          email, password
       })
-      // console.log(response)
+
       if (response.status === 200) {
-         setToken(response.data, isToRememberUser)
+         const responseToken = response.data
+         console.log({ responseToken })
+         api.defaults.headers['authorization'] = `Bearer ${responseToken}`
+         setToken(responseToken, isToRememberUser)
          setIsAuthenticated(true)
-         api.defaults.headers['authorization'] = `Bearer ${token}`
       } else {
          // alert user
          alert('Erro!')

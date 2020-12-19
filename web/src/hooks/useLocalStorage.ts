@@ -21,7 +21,11 @@ export default function useLocalStorage<T>(
    const setValue = useCallback((newValue: T, isToStoreInLocalStorage: boolean) => {
       setValueState(value)
       if (isToStoreInLocalStorage) {
-         window.localStorage.setItem(key, JSON.stringify(newValue))
+         if (newValue === null || newValue === undefined) {
+            window.localStorage.removeItem(key)
+         } else {
+            window.localStorage.setItem(key, JSON.stringify(newValue))
+         }
       }
    }, [key, value])
 
