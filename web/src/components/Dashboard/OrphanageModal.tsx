@@ -15,7 +15,7 @@ interface OrphanageModalProps {
  * 
  * @param children bottom right side buttons
  */
-const OrphanageModal: React.FC<OrphanageModalProps> = ({ orphanage, children }) => {
+const OrphanageModal: React.FC<OrphanageModalProps> = ({ orphanage, children: icons }) => {
    return (
       <div className='orphanage-modal'>
          <div className='orphanage-modal-map'>
@@ -53,7 +53,7 @@ const OrphanageModal: React.FC<OrphanageModalProps> = ({ orphanage, children }) 
          <div className='orphanage-modal-detail'>
             <p>{formatToShortText(orphanage.name)}</p>
             <div className='orphanage-modal-detail-icons'>
-               {children}
+               {icons}
             </div>
          </div>
       </div>
