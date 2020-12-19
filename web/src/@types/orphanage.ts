@@ -13,5 +13,6 @@ export interface OrphanageInterface {
 }
 
 export interface OrphanageParams {
-   id: string
+   id?: string,
+   orphanage?: OrphanageInterface
 }

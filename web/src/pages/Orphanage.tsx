@@ -2,27 +2,37 @@ import React, { useEffect, useState } from "react";
 import { FaWhatsapp } from "react-icons/fa";
 import { FiClock, FiInfo } from "react-icons/fi";
 import { Map, Marker, TileLayer } from "react-leaflet";
-
-import '../styles/pages/orphanage.css';
-import Sidebar from "../components/Sidebar";
-import mapIcon from "../utils/mapIcon";
-import api from "../services/api";
-import { useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { OrphanageInterface, OrphanageParams } from "../@types/orphanage";
+import Sidebar from "../components/Sidebar";
+import api from "../services/api";
+import '../styles/pages/orphanage.css';
+import mapIcon from "../utils/mapIcon";
 
 export default function Orphanage() {
-   const { id } = useParams<OrphanageParams>()
+   const { location } = useHistory<OrphanageParams>()
    const [orphanage, setOrphanage] = useState<OrphanageInterface>()
    const [activeImageIndex, setActiveImageIndex] = useState(0)
 
    useEffect(() => {
-      async function getOrphanage() {
+      if (!location.state) {
+         return
+      }
+
+      async function getOrphanage(id: string) {
          const response = await api.get(`/orphanages/${id}`)
          setOrphanage(response.data)
       }
 
-      getOrphanage()
-   }, [id])
+      const params = location.state
+
+      if (params.orphanage) {
+         setOrphanage(params.orphanage)
+      }
+      if (params.id) {
+         getOrphanage(params.id)
+      }
+   }, [location.state])
 
    if (!orphanage) {
       return (

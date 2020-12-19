@@ -9,7 +9,7 @@ import mapMarker from '../assets/map-marker.svg'
 import { FiPlus, FiArrowRight } from 'react-icons/fi'
 import mapIcon from '../utils/mapIcon'
 import api from '../services/api'
-import { OrphanageInterface } from '../@types/orphanage'
+import { OrphanageInterface, OrphanageParams } from '../@types/orphanage'
 import getInitialLocation from '../utils/getInitialLocation'
 
 const OrphanagesMap: React.FC = () => {
@@ -64,7 +64,12 @@ const OrphanagesMap: React.FC = () => {
                      >
                         <Popup className='map-popup' closeButton={false} maxWidth={240} minWidth={240} >
                            {orphanage.name}
-                           <Link to={`/orphanages/detail/${orphanage.id}`}>
+                           <Link to={{
+                              pathname: `/orphanages/detail/`,
+                              state: {
+                                 id: String(orphanage.id)
+                              } as OrphanageParams
+                           }}>
                               <FiArrowRight />
                            </Link>
                         </Popup>

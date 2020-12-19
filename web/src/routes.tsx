@@ -53,7 +53,7 @@ const Routes: React.FC = () => {
                   <Route path='/change-password/:token' component={ChangePassword} />
 
                   <Route path='/orphanages' exact component={OrphanagesMap} />
-                  <Route path='/orphanages/detail/:id' exact component={Orphanage} />
+                  <Route path='/orphanages/detail/' exact component={Orphanage} />
 
                   <Redirect exact from='/dashboard' to={dashboardRoutes.registeredOrphanages} />
                   <Route isPrivate path='/dashboard' component={Dashboard} />
