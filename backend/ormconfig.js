@@ -1,3 +1,4 @@
+import { __prod__ } from './src/constants'
 export default {
     type: "sqlite",
     database: "./src/database/database.sqlite",
@@ -10,5 +11,5 @@ export default {
     cli: {
         migrationsDir: "./src/database/migrations"
     },
-    logging: true
+    logging: !__prod__
 }
