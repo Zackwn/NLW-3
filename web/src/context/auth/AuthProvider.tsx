@@ -14,16 +14,17 @@ const AuthProvider: React.FC = ({ children }) => {
    useEffect(() => {
       async function refreshToken() {
          if (token) {
-            const { data: newToken, status } = await api.post('/user/refresh-token', {}, {
-               headers: {
-                  authorization: `Bearer ${token}`
-               }
-            })
-            if (status === 200) {
+            try {
+               const { data: newToken } = await api.post('/user/refresh-token', {}, {
+                  headers: {
+                     authorization: `Bearer ${token}`
+                  }
+               })
+
                api.defaults.headers['authorization'] = `Bearer ${newToken}`
                setIsAuthenticated(true)
                setToken(newToken, true)
-            } else {
+            } catch (error) {
                setToken(null, true)
                api.defaults.headers['authorization'] = undefined
             }
