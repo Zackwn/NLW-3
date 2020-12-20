@@ -6,6 +6,7 @@ import OrphanageValidation from '../validation/orphanages'
 import deleteImages from '../helpers/deleteImages'
 import { AppError } from '../errors/appError'
 import Image from '../models/Images'
+import { UserRole } from '../models/Users'
 
 export class OrphanagesController {
     async update(req: Request, res: Response) {
@@ -16,6 +17,15 @@ export class OrphanagesController {
 
         if (isNaN(id)) {
             throw new AppError(400)
+        }
+
+        if (req.userRole !== UserRole.ADMIN) {
+            // check if its user's orphanage
+            const { creator_id } = (await getRepository(Orphanage).findOne(id))
+
+            if (creator_id !== req.userId) {
+                throw new AppError(403)
+            }
         }
 
         // get removed images id and parse to json
