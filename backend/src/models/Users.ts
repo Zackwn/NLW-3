@@ -1,5 +1,10 @@
-import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import Orphanage from "./Orphanages";
+
+export enum UserRole {
+    ADMIN = "admin",
+    USER = "user"
+}
 
 @Entity('users')
 export default class Users {
@@ -17,4 +22,11 @@ export default class Users {
 
     @OneToMany(() => Orphanage, (orphanage) => orphanage.user)
     orphanages: Orphanage[]
+
+    @Column({
+        type: 'enum',
+        enum: UserRole,
+        default: UserRole.USER
+    })
+    role: UserRole
 }
