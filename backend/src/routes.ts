@@ -12,6 +12,7 @@ import authMiddleware from './middlewares/auth'
 import { UsersPasswordController } from './controllers/UsersPasswordController'
 import { ManageOrphanagesController } from './controllers/ManageOrphanageController'
 import { UsersSessionController } from './controllers/UsersSessionController'
+import onlyAdmin from './middlewares/onlyAdmin'
 
 const jwtHelper = new JWTHelper()
 
@@ -47,6 +48,7 @@ routes.use(authMiddleware)
 /* Create and Update */
 routes.post('/orphanage', upload.array('images'), orphanagesController.create)
 routes.put('/orphanage/:id', upload.array('new_images'), orphanagesController.update)
+routes.patch('/orphanage/:id', onlyAdmin, orphanagesController.patchPending)
 
 /* Manage Orphanages */
 routes.get('/user/orphanages/', manageOrphanagesController.getUserOrphanages)

@@ -9,6 +9,30 @@ import Image from '../models/Images'
 import { UserRole } from '../models/Users'
 
 export class OrphanagesController {
+    async patchPending(req: Request, res: Response) {
+        let id: number | string = req.params.id
+
+        id = Number(id)
+
+        if (isNaN(id)) {
+            throw new AppError(400)
+        }
+
+        const { pending } = req.body
+
+        if (pending === undefined || pending === null) {
+            throw new AppError(400)
+        }
+
+        await getRepository(Orphanage).update({
+            id
+        }, {
+            pending
+        })
+
+        return res.send()
+    }
+
     async update(req: Request, res: Response) {
         // get the orphanage id and parse to number
         let id: number | string = req.params.id
