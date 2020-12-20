@@ -3,7 +3,7 @@ import {
 } from 'argon2'
 import { Request, Response } from 'express'
 import { getRepository } from 'typeorm'
-import User from '../models/Users'
+import User, { UserRole } from '../models/Users'
 import UserValidation from '../validation/user'
 import UserView from '../views/users_view'
 
@@ -12,11 +12,12 @@ export class UsersController {
         const {
             email,
             password,
-            name
+            name,
+            role
         } = req.body
 
         const userData = {
-            email, password, name
+            email, password, name, role
         }
 
         await UserValidation.create.validate(userData, {
