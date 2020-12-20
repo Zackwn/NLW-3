@@ -3,7 +3,7 @@ import {
 } from 'argon2'
 import { Request, Response } from 'express'
 import { getRepository } from 'typeorm'
-import User, { UserRole } from '../models/Users'
+import User from '../models/Users'
 import UserValidation from '../validation/user'
 import UserView from '../views/users_view'
 

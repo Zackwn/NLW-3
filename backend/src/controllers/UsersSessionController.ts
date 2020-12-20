@@ -40,7 +40,10 @@ export class UsersSessionController {
         }
 
         // login user
-        const token = this.jwtHelper.sign<userPayload>({ userId: user.id })
+        const token = this.jwtHelper.sign<userPayload>({
+            userId: user.id,
+            userRole: user.role
+        })
 
         return res.json(token)
     }
@@ -57,7 +60,8 @@ export class UsersSessionController {
         }
 
         const token = this.jwtHelper.sign({
-            userId
+            userId,
+            userRole: user.role
         })
 
         return res.json(token)

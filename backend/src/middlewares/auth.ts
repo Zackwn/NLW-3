@@ -18,6 +18,7 @@ export default function authMiddleware(req: Request, res: Response, next: NextFu
             return res.status(401).send()
         }
         req.userId = payload.userId
+        req.userRole = payload.userRole
         next()
     } catch (error) {
         return res.status(401).send()
