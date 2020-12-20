@@ -20,7 +20,7 @@ export class OrphanagesController {
         }
 
         if (req.userRole !== UserRole.ADMIN) {
-            // check if its user's orphanage
+            // check if user own the orphanage
             const { creator_id } = (await getRepository(Orphanage).findOne(id))
 
             if (creator_id !== req.userId) {
