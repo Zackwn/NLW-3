@@ -1,25 +1,17 @@
 /* Input */
 div.text-component.with-error input {
-   border: 1px solid #FF669D;
-
+   border: 1px solid #FF669D !important;
 
    background-color: rgba(255, 102, 158, 0.039);
 }
 
-div.text-component input:not(:placeholder-shown) {
-   border: 1px solid #A1E9C5;
-}
 
 /* Textarea */
 div.text-component.with-error textarea {
-   border: 1px solid #FF669D;
+   border: 1px solid #FF669D !important;
 
 
    background-color: rgba(255, 102, 135, 0.039);
-}
-
-div.text-component textarea:not(:placeholder-shown) {
-   border: 1px solid #A1E9C5;
 }
 
 /* Both */

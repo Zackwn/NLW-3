@@ -39,3 +39,11 @@ div.input-component input {
 
    color: #5C8599;
 }
+
+div.text-component input:not(:placeholder-shown) {
+   border: 1px solid #A1E9C5;
+}
+
+div.text-component textarea:not(:placeholder-shown) {
+   border: 1px solid #A1E9C5;
+}
