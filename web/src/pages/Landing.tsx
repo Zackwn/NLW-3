@@ -19,7 +19,7 @@ const Landing: React.FC = () => {
                   </div>
                </div>
 
-               <Link to='/login'>
+               <Link to='/admin'>
                   <button id='access-restrict-button'>
                      Acesso Restrito
                </button>

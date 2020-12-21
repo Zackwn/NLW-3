@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 
-import AuthContext from './AuthContext'
+import AuthContext, { UserRole } from './AuthContext'
 
 import api from '../../services/api'
 import useLocalStorage from '../../hooks/useLocalStorage'
 
 const AuthProvider: React.FC = ({ children }) => {
    const [isAuthenticated, setIsAuthenticated] = useState(false)
+   const [isAdmin, setIsAdmin] = useState(false)
    const [token, setToken] = useLocalStorage<string | null>('token', null)
 
    const [isLoading, setIsLoading] = useState(true)
@@ -15,15 +16,21 @@ const AuthProvider: React.FC = ({ children }) => {
       async function refreshToken() {
          if (token) {
             try {
-               const { data: newToken } = await api.post('/user/refresh-token', {}, {
+               const response = await api.post('/user/refresh-token', {}, {
                   headers: {
                      authorization: `Bearer ${token}`
                   }
                })
 
+               const { token: newToken, userRole } = response.data
+
                api.defaults.headers['authorization'] = `Bearer ${newToken}`
                setIsAuthenticated(true)
                setToken(newToken, true)
+
+               if (userRole === "admin") {
+                  setIsAdmin(true)
+               }
             } catch (error) {
                setToken(null, true)
                api.defaults.headers['authorization'] = undefined
@@ -37,21 +44,24 @@ const AuthProvider: React.FC = ({ children }) => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [])
 
-   async function handleLogin(email: string, password: string, isToRememberUser: boolean): Promise<void> {
+   async function handleLogin(email: string, password: string, isToRememberUser: boolean): Promise<UserRole> {
       const response = await api.post('/user/login', {
          email, password
       })
 
-      if (response.status === 200) {
-         const responseToken = response.data
-         console.log({ responseToken })
-         api.defaults.headers['authorization'] = `Bearer ${responseToken}`
-         setToken(responseToken, isToRememberUser)
-         setIsAuthenticated(true)
-      } else {
-         // alert user
-         alert('Erro!')
+      // if an error happen axios will throw it, making the code below not being executed
+      const { token, userRole } = response.data
+      console.log({ token, userRole })
+
+      api.defaults.headers['authorization'] = `Bearer ${token}`
+      setToken(token, isToRememberUser)
+      setIsAuthenticated(true)
+
+      if (userRole === "admin") {
+         setIsAdmin(true)
       }
+
+      return userRole
    }
 
    return (
@@ -59,6 +69,7 @@ const AuthProvider: React.FC = ({ children }) => {
          value={{
             handleLogin,
             isAuthenticated,
+            isAdmin,
             isLoading
          }}>
          {children}

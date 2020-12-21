@@ -16,18 +16,29 @@ import ForgotPassword from './pages/ForgotPassword'
 import ChangePassword from './pages/ChangePassword'
 import ToastProvider from './context/toast/ToastProvider'
 import UpdateOrphanage from './pages/UpdateOrphanage'
+import Admin from './pages/Admin'
 
-function Route({ isPrivate = false, ...routeParams }: { isPrivate?: boolean } & RouteProps) {
-   const { isLoading, isAuthenticated } = useContext(AuthContext)
+interface AuthRouteProps extends RouteProps {
+   isPrivate?: boolean,
+   onlyAdmin?: boolean
+}
+
+function Route({ isPrivate = false, onlyAdmin = false, ...routeParams }: AuthRouteProps) {
+   const { isLoading, isAuthenticated, isAdmin } = useContext(AuthContext)
 
    if (isLoading) {
       return <h3>Carregando...</h3>
    }
 
-   // console.log({ isPrivate, isAuthenticated })
+   if (onlyAdmin && !isAdmin) {
+      console.log(routeParams.component)
+
+      return <Redirect to='/login' />
+   }
+
    if (isPrivate && !isAuthenticated) {
       console.log(routeParams.component)
-      // redirect user
+
       return <Redirect to='/login' />
    }
 
@@ -37,6 +48,11 @@ function Route({ isPrivate = false, ...routeParams }: { isPrivate?: boolean } & 
 export const dashboardRoutes = {
    registeredOrphanages: '/dashboard/orphanages/',
    pendingOrphanages: '/dashboard/orphanages/pending/'
+}
+
+export const adminRoutes = {
+   registeredOrphanages: '/admin/orphanages/',
+   pendingOrphanges: '/admin/orphanages/pending'
 }
 
 const Routes: React.FC = () => {
@@ -57,6 +73,9 @@ const Routes: React.FC = () => {
 
                   <Redirect exact from='/dashboard' to={dashboardRoutes.registeredOrphanages} />
                   <Route isPrivate path='/dashboard' component={Dashboard} />
+
+                  <Redirect exact from='/admin' to={adminRoutes.registeredOrphanages} />
+                  <Route onlyAdmin={true} path='/admin' component={Admin} />
 
                   <Route isPrivate path='/orphanages/create' exact component={CreateOrphanage} />
                   <Route isPrivate path='/orphanages/update' exact component={UpdateOrphanage} />

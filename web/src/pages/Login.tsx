@@ -9,7 +9,7 @@ import { Link, useHistory } from 'react-router-dom'
 
 import '../styles/pages/login.css'
 import ToastContext from '../context/toast/ToastContext'
-import api from '../services/api'
+import { adminRoutes, dashboardRoutes } from '../routes'
 
 const Login: React.FC = () => {
    const history = useHistory()
@@ -27,13 +27,14 @@ const Login: React.FC = () => {
       event.preventDefault()
 
       try {
-         console.log(api.defaults.headers['authorization'])
-         await handleLogin(email, password, rememberUser)
-         console.log(api.defaults.headers['authorization'])
+         const userRole = await handleLogin(email, password, rememberUser)
+
          setEmailError(undefined)
          setPasswordError(undefined)
+
          toast({ message: 'Login feito com sucesso!', type: 'success' })
-         history.push('/dashboard/orphanages/')
+
+         history.push(userRole === "admin" ? adminRoutes.registeredOrphanages : dashboardRoutes.registeredOrphanages)
       } catch (error) {
          const { fieldErrors } = error.response.data
          if (fieldErrors) {
