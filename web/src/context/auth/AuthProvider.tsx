@@ -32,6 +32,7 @@ const AuthProvider: React.FC = ({ children }) => {
                   setIsAdmin(true)
                }
             } catch (error) {
+               // isAthenticated and isAdmin are alredy false
                setToken(null, true)
                api.defaults.headers['authorization'] = undefined
             }
@@ -64,10 +65,18 @@ const AuthProvider: React.FC = ({ children }) => {
       return userRole
    }
 
+   function handleLogout() {
+      setIsAuthenticated(false)
+      setIsAdmin(false)
+      setToken(null, true)
+      api.defaults.headers['authorization'] = undefined
+   }
+
    return (
       <AuthContext.Provider
          value={{
             handleLogin,
+            handleLogout,
             isAuthenticated,
             isAdmin,
             isLoading

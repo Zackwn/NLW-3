@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { FiPower, FiMapPin, FiInfo } from 'react-icons/fi'
 
 import mapMarkerImg from '../../assets/map-marker.svg'
@@ -7,9 +7,11 @@ import { useHistory } from 'react-router-dom'
 import { dashboardRoutes } from '../../routes'
 
 import '../../styles/components/dashboard/sidebar.css'
+import AuthContext from '../../context/auth/AuthContext'
 
 const DashboardSidebar: React.FC = () => {
-   const { goBack, push, listen } = useHistory()
+   const { push, listen } = useHistory()
+   const { handleLogout } = useContext(AuthContext)
 
    const formatPathname = useCallback((pathname: string): string => {
       if (pathname.split('')[pathname.length - 1] !== '/') {
@@ -52,7 +54,7 @@ const DashboardSidebar: React.FC = () => {
          </div>
 
          <footer>
-            <button type="button" onClick={goBack}>
+            <button type="button" onClick={handleLogout}>
                <FiPower size={24} color="#FFF" />
             </button>
          </footer>

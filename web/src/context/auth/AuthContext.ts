@@ -6,7 +6,8 @@ interface AuthContext {
    isAuthenticated: boolean,
    isAdmin: boolean,
    isLoading: boolean,
-   handleLogin(email: string, password: string, isToRememberUser: boolean): Promise<UserRole>
+   handleLogin(email: string, password: string, isToRememberUser: boolean): Promise<UserRole>,
+   handleLogout(): void
 }
 
 export default createContext<AuthContext>({} as AuthContext)
