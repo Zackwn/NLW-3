@@ -45,7 +45,10 @@ export class UsersSessionController {
             userRole: user.role
         })
 
-        return res.json(token)
+        return res.json({
+            token,
+            userRole: user.role
+        })
     }
 
     async refreshToken(req: Request, res: Response) {
@@ -64,6 +67,9 @@ export class UsersSessionController {
             userRole: user.role
         })
 
-        return res.json(token)
+        return res.json({
+            token,
+            userRole: user.role
+        })
     }
 }
