@@ -1,6 +1,6 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
-import DashboardWrapper from '../../components/Dashboard/Wrapper'
+import NestedSidebarLayout from '../../components/Dashboard/NestedSidebarLayout'
 
 import { dashboardRoutes } from '../../routes'
 
@@ -9,7 +9,7 @@ import Registered from './Registered'
 
 const Dashboard: React.FC = () => {
    return (
-      <DashboardWrapper>
+      <NestedSidebarLayout links='user'>
          <Switch>
             <Route
                path={dashboardRoutes.registeredOrphanages}
@@ -22,7 +22,7 @@ const Dashboard: React.FC = () => {
                component={Pending}
             />
          </Switch>
-      </DashboardWrapper>
+      </NestedSidebarLayout>
    )
 }
 

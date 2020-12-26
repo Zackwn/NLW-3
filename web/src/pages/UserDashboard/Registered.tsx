@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import '../../styles/pages/dashboard/index.css'
-import OrphanageModal from '../../components/Dashboard/OrphanageModal'
+import OrphanageModal from '../../components/Orphanage/OrphanageModal'
 import { FiEdit3, FiTrash } from 'react-icons/fi'
 import api from '../../services/api'
 import { OrphanageInterface } from '../../@types/orphanage'

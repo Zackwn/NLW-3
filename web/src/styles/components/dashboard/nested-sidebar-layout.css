@@ -1,11 +1,11 @@
-div#dashboard-wrapper {
+div#nested-sidebar-layout {
    width: 100vw;
    height: 100vh;
 
    display: flex;
 }
 
-div#dashboard-wrapper div#dashboard-content-wrapper {
+div#nested-sidebar-layout div#nested-sidebar-layout-content-wrapper {
    display: flex;
 
    width: 100%;

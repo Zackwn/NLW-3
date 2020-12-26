@@ -36,7 +36,7 @@ const Login: React.FC = () => {
 
          history.push(userRole === "admin" ? adminRoutes.registeredOrphanages : dashboardRoutes.registeredOrphanages)
       } catch (error) {
-         const { fieldErrors } = error.response.data
+         const fieldErrors = error?.response?.data?.fieldErrors
          if (fieldErrors) {
             if (fieldErrors.email) {
                setEmailError(fieldErrors.email)

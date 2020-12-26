@@ -1,4 +1,4 @@
-aside#dashboard-sidebar {
+aside#nested-sidebar {
    width: 96px;
    height: 100%;
 
@@ -11,11 +11,11 @@ aside#dashboard-sidebar {
    align-items: center;
 }
 
-aside#dashboard-sidebar img {
+aside#nested-sidebar img {
    width: 48px;
 }
 
-aside#dashboard-sidebar #dashboard-links {
+aside#nested-sidebar #nested-links {
    display: flex;
 
    flex-direction: column;
@@ -25,8 +25,8 @@ aside#dashboard-sidebar #dashboard-links {
    gap: 16px;
 }
 
-aside#dashboard-sidebar a,
-aside#dashboard-sidebar button {
+aside#nested-sidebar a,
+aside#nested-sidebar button {
    width: 48px;
    height: 48px;
 
@@ -44,15 +44,15 @@ aside#dashboard-sidebar button {
    align-items: center;
 }
 
-aside#dashboard-sidebar button.active {
+aside#nested-sidebar button.active {
    background: #FFD666;
 }
 
-aside#dashboard-sidebar button.active:hover {
+aside#nested-sidebar button.active:hover {
    background-color: #e0bc5a;
 }
 
-aside#dashboard-sidebar a:hover,
-aside#dashboard-sidebar button:hover {
+aside#nested-sidebar a:hover,
+aside#nested-sidebar button:hover {
    background: #17D6EB;
 }

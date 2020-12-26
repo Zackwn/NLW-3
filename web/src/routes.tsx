@@ -1,7 +1,8 @@
 import React, { useContext } from 'react'
 import { BrowserRouter, Switch, Route as ReactRouterDomRoute, RouteProps, Redirect } from 'react-router-dom'
 
-import Dashboard from './pages/Dashboard'
+import UserDashboard from './pages/UserDashboard'
+import AdminDashboard from './pages/AdminDashboard'
 
 import Landing from './pages/Landing'
 import OrphanagesMap from './pages/OrphanagesMap'
@@ -16,7 +17,6 @@ import ForgotPassword from './pages/ForgotPassword'
 import ChangePassword from './pages/ChangePassword'
 import ToastProvider from './context/toast/ToastProvider'
 import UpdateOrphanage from './pages/UpdateOrphanage'
-import Admin from './pages/Admin'
 
 interface AuthRouteProps extends RouteProps {
    isPrivate?: boolean,
@@ -52,7 +52,7 @@ export const dashboardRoutes = {
 
 export const adminRoutes = {
    registeredOrphanages: '/admin/orphanages/',
-   pendingOrphanges: '/admin/orphanages/pending'
+   pendingOrphanges: '/admin/orphanages/pending/'
 }
 
 const Routes: React.FC = () => {
@@ -72,10 +72,10 @@ const Routes: React.FC = () => {
                   <Route path='/orphanages/detail/' exact component={Orphanage} />
 
                   <Redirect exact from='/dashboard' to={dashboardRoutes.registeredOrphanages} />
-                  <Route isPrivate path='/dashboard' component={Dashboard} />
+                  <Route isPrivate path='/dashboard' component={UserDashboard} />
 
                   <Redirect exact from='/admin' to={adminRoutes.registeredOrphanages} />
-                  <Route onlyAdmin={true} path='/admin' component={Admin} />
+                  <Route onlyAdmin={true} path='/admin' component={AdminDashboard} />
 
                   <Route isPrivate path='/orphanages/create' exact component={CreateOrphanage} />
                   <Route isPrivate path='/orphanages/update' exact component={UpdateOrphanage} />

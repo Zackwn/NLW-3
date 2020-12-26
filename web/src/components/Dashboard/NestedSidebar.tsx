@@ -1,15 +1,23 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { FiPower, FiMapPin, FiInfo } from 'react-icons/fi'
+import { FiPower } from 'react-icons/fi'
+import { IconType } from 'react-icons/lib'
 
 import mapMarkerImg from '../../assets/map-marker.svg'
 import { useHistory } from 'react-router-dom'
 
-import { dashboardRoutes } from '../../routes'
-
-import '../../styles/components/dashboard/sidebar.css'
+import '../../styles/components/dashboard/nested-sidebar.css'
 import AuthContext from '../../context/auth/AuthContext'
 
-const DashboardSidebar: React.FC = () => {
+export interface NestedLinks {
+   pathname: string,
+   icon: IconType
+}
+
+interface NestedSidebarProps {
+   nestedLinks: NestedLinks[]
+}
+
+const NestedSidebar: React.FC<NestedSidebarProps> = ({ nestedLinks }) => {
    const { push, listen } = useHistory()
    const { handleLogout } = useContext(AuthContext)
 
@@ -32,25 +40,21 @@ const DashboardSidebar: React.FC = () => {
    }, [formatPathname, listen])
 
    return (
-      <aside id="dashboard-sidebar">
+      <aside id="nested-sidebar">
          <img src={mapMarkerImg} alt="Happy" />
 
-         <div id='dashboard-links'>
-            <button
-               type='button'
-               onClick={() => push(dashboardRoutes.registeredOrphanages)}
-               className={pathname === dashboardRoutes.registeredOrphanages ? 'active' : ''}
-            >
-               <FiMapPin size={24} color="#FFF" />
-            </button>
-
-            <button
-               type='button'
-               onClick={() => push(dashboardRoutes.pendingOrphanages)}
-               className={pathname === dashboardRoutes.pendingOrphanages ? 'active' : ''}
-            >
-               <FiInfo size={24} color="#FFF" />
-            </button>
+         <div id='nested-links'>
+            {nestedLinks.map((nestedLink) => {
+               return (
+                  <button
+                     type='button'
+                     onClick={() => push(nestedLink.pathname)}
+                     className={pathname === nestedLink.pathname ? 'active' : ''}
+                  >
+                     <nestedLink.icon size={24} color="#FFF" />
+                  </button>
+               )
+            })}
          </div>
 
          <footer>
@@ -62,4 +66,4 @@ const DashboardSidebar: React.FC = () => {
    )
 }
 
-export default DashboardSidebar
+export default NestedSidebar
