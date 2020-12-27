@@ -1,4 +1,3 @@
-import { getRepository } from 'typeorm'
 import { AppError } from '../errors/appError'
 import Orphanage from '../models/Orphanages'
 import { UserRole } from '../models/Users'
@@ -14,21 +13,21 @@ interface isOrphanageFromUserUserParams {
 
 /**
  * @param options ignoreIfAdmin default value is false
- * @returns If orphanage is from user will return the orphanage object. if orphanage is not from user an response with 403 status will be send
+ * @returns If orphanage is from user will return void. if orphanage is not from user an response with 403 status will be send
  */
 export async function orphanageIsFromUserOrFail(
     { userId, userRole }: isOrphanageFromUserUserParams,
-    orphanageId: number,
+    creatorId: number,
     options?: isOrphanageFromUserOptions
-): Promise<Orphanage> {
+): Promise<void> {
     if (userRole === UserRole.ADMIN && options.ignoreIfAdmin) {
-        return getRepository(Orphanage).findOne(orphanageId)
+        return
     }
 
     // check if user own the orphanage
-    const orphanage = (await getRepository(Orphanage).findOne(orphanageId))
-
-    if (orphanage.creator_id !== userId) {
+    if (creatorId !== userId) {
         throw new AppError(403)
     }
+
+    return
 }

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { FindManyOptions, getManager, getRepository } from 'typeorm'
+import deleteImages from '../helpers/deleteImages'
 import Image from '../models/Images'
 import Orphanage from '../models/Orphanages'
 import { orphanageIsFromUserOrFail } from '../utils/isOrphanageFromUser'
@@ -36,9 +37,13 @@ export class ManageOrphanageController {
     async deleteById(req: Request, res: Response) {
         const orphanageId = parseIntOrFail(req.params.id)
 
-        const { images } = await orphanageIsFromUserOrFail(
+        const orphanage = (await getRepository(Orphanage).findOneOrFail(orphanageId, {
+            relations: ['images']
+        }))
+
+        await orphanageIsFromUserOrFail(
             { userId: req.userId, userRole: req.userRole },
-            orphanageId,
+            orphanage.creator_id,
             { ignoreIfAdmin: false }
         )
 
@@ -49,9 +54,13 @@ export class ManageOrphanageController {
 
             await orphanageRepository.delete(orphanageId)
 
-            const deleteImagesPromises = images.map(image => imageRepository.delete(image.id))
+            const deleteImagesPromises = orphanage.images.map(image => imageRepository.delete(image.id))
 
             await Promise.all(deleteImagesPromises)
         })
+
+        deleteImages.many(orphanage.images)
+
+        return res.status(204).send()
     }
 }

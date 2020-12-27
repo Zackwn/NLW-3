@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { DeleteResult, getManager, getRepository } from 'typeorm'
+import { getManager, getRepository } from 'typeorm'
 import { AppError } from '../errors/appError'
 import deleteImages from '../helpers/deleteImages'
 import Image from '../models/Images'
@@ -14,9 +14,11 @@ export class OrphanagesController {
         // get the orphanage id and parse to number
         let orphanageId = parseIntOrFail(req.params.id)
 
+        const { creator_id } = (await getRepository(Orphanage).findOneOrFail(orphanageId))
+
         await orphanageIsFromUserOrFail(
             { userId: req.userId, userRole: req.userRole },
-            orphanageId,
+            creator_id,
             { ignoreIfAdmin: true }
         )
 
