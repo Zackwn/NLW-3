@@ -6,7 +6,8 @@
     "scripts": {
         "dev": "ts-node-dev --transpile-only --ignore-watch node_modules ./src/index.ts",
         "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js",
-        "build": "tsc -p ./tsconfig.json"
+        "build": "tsc -p ./tsconfig.json",
+        "start": "NODE_ENV=production node ./dist/index.js"
     },
     "dependencies": {
         "argon2": "^0.27.0",
@@ -35,6 +36,7 @@
         "dotenv": "^8.2.0",
         "ts-node": "^9.0.0",
         "ts-node-dev": "^1.0.0-pre.63",
-        "typescript": "^4.0.3"
+        "typescript": "^4.0.3",
+        "win-node-env": "^0.4.0"
     }
 }

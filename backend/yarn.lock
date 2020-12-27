@@ -2591,6 +2591,11 @@ wide-align@^1.1.0:
   dependencies:
     string-width "^1.0.2 || 2"
 
+win-node-env@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/win-node-env/-/win-node-env-0.4.0.tgz#2d9dc991702920c73eaa1d644655b773886da5cb"
+  integrity sha512-bf4TV/NOBEazlHJW/bOns7u2JaHe3f5bz8BYanm/xuqJ405NG9OK3VAI1Y2WvHJsAo4GMU8EYTHSh59Q3UfHvA==
+
 wrap-ansi@^6.2.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-6.2.0.tgz#e9393ba07102e6c91a3b221478f0257cd2856e53"

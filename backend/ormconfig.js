@@ -1,15 +1,21 @@
-import { __prod__ } from './src/constants'
-export default {
-    type: "sqlite",
-    database: "./src/database/database.sqlite",
+const folder = process.env.NODE_ENV === "production" ? "dist" : "src"
+const extension = process.env.NODE_ENV === "production" ? ".js" : ".ts"
+console.log()
+module.exports = {
+    type: "postgres",
+    host: process.env.DB_HOST,
+    password: process.env.DB_PASS,
+    port: parseInt(process.env.DB_PORT),
+    username: process.env.DB_USER,
+    // database: 'nlwhappy',
     migrations: [
-        "./src/database/migrations/*.ts"
+        `./${folder}/database/migrations/*${extension}`
     ],
     entities: [
-        "./src/models/*.ts"
+        `./${folder}/models/*${extension}`
     ],
     cli: {
-        migrationsDir: "./src/database/migrations"
+        migrationsDir: `./${folder}/database/migrations`
     },
-    logging: !__prod__
+    logging: true
 }
