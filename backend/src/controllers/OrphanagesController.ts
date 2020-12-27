@@ -1,56 +1,24 @@
 import { Request, Response } from 'express'
-import { getRepository, getManager, DeleteResult } from 'typeorm'
-import Orphanage from '../models/Orphanages'
-import OrphanageView from '../views/orphanages_view'
-import OrphanageValidation from '../validation/orphanages'
-import deleteImages from '../helpers/deleteImages'
+import { DeleteResult, getManager, getRepository } from 'typeorm'
 import { AppError } from '../errors/appError'
+import deleteImages from '../helpers/deleteImages'
 import Image from '../models/Images'
-import { UserRole } from '../models/Users'
+import Orphanage from '../models/Orphanages'
+import { orphanageIsFromUserOrFail } from '../utils/isOrphanageFromUser'
+import { parseIntOrFail } from '../utils/parseIntOrFail'
+import OrphanageValidation from '../validation/orphanages'
+import OrphanageView from '../views/orphanages_view'
 
 export class OrphanagesController {
-    async patchPending(req: Request, res: Response) {
-        let id: number | string = req.params.id
-
-        id = Number(id)
-
-        if (isNaN(id)) {
-            throw new AppError(400)
-        }
-
-        const { pending } = req.body
-
-        if (pending === undefined || pending === null) {
-            throw new AppError(400)
-        }
-
-        await getRepository(Orphanage).update({
-            id
-        }, {
-            pending
-        })
-
-        return res.send()
-    }
-
     async update(req: Request, res: Response) {
         // get the orphanage id and parse to number
-        let id: number | string = req.params.id
+        let orphanageId = parseIntOrFail(req.params.id)
 
-        id = Number(id)
-
-        if (isNaN(id)) {
-            throw new AppError(400)
-        }
-
-        if (req.userRole !== UserRole.ADMIN) {
-            // check if user own the orphanage
-            const { creator_id } = (await getRepository(Orphanage).findOne(id))
-
-            if (creator_id !== req.userId) {
-                throw new AppError(403)
-            }
-        }
+        await orphanageIsFromUserOrFail(
+            { userId: req.userId, userRole: req.userRole },
+            orphanageId,
+            { ignoreIfAdmin: true }
+        )
 
         // get removed images id and parse to json
         const { removed_images } = req.body
@@ -79,7 +47,7 @@ export class OrphanagesController {
         const requestImages = req.files as Express.Multer.File[]
 
         const new_images = requestImages.map(image => {
-            return { path: image.filename, orphanage_id: id } as Image
+            return { path: image.filename, orphanage_id: orphanageId } as Image
         })
 
         const updateOrphanageData = {
@@ -106,17 +74,15 @@ export class OrphanagesController {
             new_images
         })
 
-        let deleteImagesResult: Promise<DeleteResult>[]
-
         await getManager().transaction(async runInTransaction => {
             const orphanageRepository = runInTransaction.getRepository(Orphanage)
             const imageRepository = runInTransaction.getRepository(Image)
 
-            await orphanageRepository.update(id, updateOrphanageData)
+            await orphanageRepository.update(orphanageId, updateOrphanageData)
 
             await imageRepository.insert(new_images)
 
-            deleteImagesResult = removedImages.map(image => {
+            const deleteImagesResult = removedImages.map(image => {
                 return imageRepository.delete(image.id)
             })
 

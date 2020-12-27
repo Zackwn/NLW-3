@@ -10,14 +10,16 @@ import { OrphanagesController } from './controllers/OrphanagesController'
 import { UsersController } from './controllers/UsersController'
 import authMiddleware from './middlewares/auth'
 import { UsersPasswordController } from './controllers/UsersPasswordController'
-import { ManageOrphanagesController } from './controllers/ManageOrphanageController'
+import { ManageOrphanageController } from './controllers/ManageOrphanageController'
 import { UsersSessionController } from './controllers/UsersSessionController'
 import onlyAdmin from './middlewares/onlyAdmin'
+import { AdminManageOrphanageController } from './controllers/AdminManageOrphanageController'
 
 const jwtHelper = new JWTHelper()
 
 const orphanagesController = new OrphanagesController()
-const manageOrphanagesController = new ManageOrphanagesController()
+const manageOrphanageController = new ManageOrphanageController()
+const adminManageOrphanageController = new AdminManageOrphanageController()
 const usersController = new UsersController()
 const usersPassword = new UsersPasswordController()
 const usersSessionController = new UsersSessionController(jwtHelper)
@@ -48,9 +50,12 @@ routes.use(authMiddleware)
 /* Create and Update */
 routes.post('/orphanage', upload.array('images'), orphanagesController.create)
 routes.put('/orphanage/:id', upload.array('new_images'), orphanagesController.update)
-routes.patch('/orphanage/:id', onlyAdmin, orphanagesController.patchPending)
 
-/* Manage Orphanages */
-routes.get('/user/orphanages/', manageOrphanagesController.getUserOrphanages)
+/* User Manage Orphanages */
+routes.get('/user/orphanages/', manageOrphanageController.getUserOrphanages)
+routes.delete('/user/orphanages/:id', manageOrphanageController.deleteById)
+
+/* Admin Manage Orphanages */
+routes.patch('/orphanage/:id', onlyAdmin, adminManageOrphanageController.patchPending)
 
 export default routes
