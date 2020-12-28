@@ -16,7 +16,7 @@ export class OrphanagesController {
 
         const { creator_id } = (await getRepository(Orphanage).findOneOrFail(orphanageId))
 
-        await orphanageIsFromUserOrFail(
+        orphanageIsFromUserOrFail(
             { userId: req.userId, userRole: req.userRole },
             creator_id,
             { passAdmin: true }

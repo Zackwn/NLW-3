@@ -41,7 +41,7 @@ export class ManageOrphanageController {
             relations: ['images']
         }))
 
-        await orphanageIsFromUserOrFail(
+        orphanageIsFromUserOrFail(
             { userId: req.userId, userRole: req.userRole },
             orphanage.creator_id,
             { passAdmin: false }
