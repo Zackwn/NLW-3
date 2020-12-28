@@ -19,7 +19,7 @@ export class OrphanagesController {
         await orphanageIsFromUserOrFail(
             { userId: req.userId, userRole: req.userRole },
             creator_id,
-            { ignoreIfAdmin: true }
+            { passAdmin: true }
         )
 
         // get removed images id and parse to json

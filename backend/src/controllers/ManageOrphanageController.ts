@@ -44,7 +44,7 @@ export class ManageOrphanageController {
         await orphanageIsFromUserOrFail(
             { userId: req.userId, userRole: req.userRole },
             orphanage.creator_id,
-            { ignoreIfAdmin: false }
+            { passAdmin: false }
         )
 
         // delete orphanage

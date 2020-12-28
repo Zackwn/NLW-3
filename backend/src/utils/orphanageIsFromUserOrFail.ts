@@ -3,7 +3,7 @@ import Orphanage from '../models/Orphanages'
 import { UserRole } from '../models/Users'
 
 interface isOrphanageFromUserOptions {
-    ignoreIfAdmin: boolean
+    passAdmin: boolean
 }
 
 interface isOrphanageFromUserUserParams {
@@ -12,7 +12,7 @@ interface isOrphanageFromUserUserParams {
 }
 
 /**
- * @param options ignoreIfAdmin default value is false
+ * @param options passAdmin default value is false
  * @returns If orphanage is from user will return void. if orphanage is not from user an response with 403 status will be send
  */
 export async function orphanageIsFromUserOrFail(
@@ -20,7 +20,7 @@ export async function orphanageIsFromUserOrFail(
     creatorId: number,
     options?: isOrphanageFromUserOptions
 ): Promise<void> {
-    if (userRole === UserRole.ADMIN && options.ignoreIfAdmin) {
+    if (userRole === UserRole.ADMIN && options.passAdmin) {
         return
     }
 
