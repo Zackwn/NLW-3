@@ -2,31 +2,39 @@ import express from 'express'
 import Redis from 'ioredis'
 import cors from 'cors'
 import path from 'path'
+import { createConnection } from 'typeorm'
 
 import 'express-async-errors'
 import './database/connection'
 
 import routes from './routes'
 import errorHandler from './errors/handler'
+import { __prod__ } from './constants'
 
-const app = express()
-const redisClient = new Redis({
-    password: "docker",
-    host: "127.0.0.1",
-    port: 6379
-})
+const main = async () => {
+    const conn = await createConnection()
+    conn.runMigrations()
 
-app.use(cors())
-app.use(express.json())
+    const app = express()
+    const redisClient = new Redis({
+        // password: "docker",
+        host: "127.0.0.1",
+        port: 6379
+    })
 
-app.use((req, _, next) => {
-    req.redis = redisClient
-    next()
-})
+    app.use(cors())
+    app.use(express.json())
 
-app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')))
-app.use(routes)
-app.use(errorHandler)
+    app.use((req, _, next) => {
+        req.redis = redisClient
+        next()
+    })
 
-const PORT = 3333
-app.listen(PORT, () => console.log(`listening on port ${PORT}`))
+    app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')))
+    app.use(routes)
+    app.use(errorHandler)
+
+    return app
+}
+
+export { main }
