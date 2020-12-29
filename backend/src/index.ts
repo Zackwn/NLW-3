@@ -17,9 +17,9 @@ const main = async () => {
 
     const app = express()
     const redisClient = new Redis({
-        // password: "docker",
-        host: "127.0.0.1",
-        port: 6379
+        password: String(process.env.REDIS_PASS),
+        host: String(process.env.REDIS_HOST),
+        port: Number(process.env.REDIS_PORT)
     })
 
     app.use(cors())
