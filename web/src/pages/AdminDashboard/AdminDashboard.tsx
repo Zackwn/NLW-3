@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import NestedSidebarLayout from '../../components/Dashboard/NestedSidebarLayout';
 import { adminRoutes } from '../../routes';
+import Pending from './Pending';
 
 const Admin: React.FC = () => {
    return (
@@ -15,7 +16,7 @@ const Admin: React.FC = () => {
             <Route
                path={adminRoutes.pendingOrphanges}
                exact
-               component={() => <h1>Pending</h1>}
+               component={Pending}
             />
          </Switch>
       </NestedSidebarLayout>
