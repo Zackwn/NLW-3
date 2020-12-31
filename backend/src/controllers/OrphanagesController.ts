@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { getManager, getRepository } from 'typeorm'
+import { FindManyOptions, getManager, getRepository } from 'typeorm'
 import { AppError } from '../errors/appError'
 import deleteImages from '../helpers/deleteImages'
 import Image from '../models/Images'
@@ -112,13 +112,25 @@ export class OrphanagesController {
         return res.json(OrphanageView.render(orphanage))
     }
 
-    async index(_: Request, res: Response) {
+    async index(req: Request, res: Response) {
+        const { pending } = req.query
+
+        const whereOptions: FindManyOptions<Orphanage> = {
+            relations: ['images', 'user'],
+            where: {}
+        }
+
+        if (pending === "true") {
+            whereOptions.where['pending'] = true
+        }
+
+        if (pending === "false") {
+            whereOptions.where['pending'] = false
+        }
+
         const orphanageRepository = getRepository(Orphanage)
 
-        const orphanages = await orphanageRepository.find({
-            where: { pending: false },
-            relations: ['images', 'user']
-        })
+        const orphanages = await orphanageRepository.find(whereOptions)
 
         return res.json(OrphanageView.renderMany(orphanages))
     }

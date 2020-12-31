@@ -22,7 +22,7 @@ const OrphanagesMap: React.FC = () => {
 
    useEffect(() => {
       async function getOrphanages() {
-         const response = await api.get('/orphanages')
+         const response = await api.get('/orphanages?pending=false')
          setOrphanages(response.data)
       }
 
