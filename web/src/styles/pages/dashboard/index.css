@@ -37,7 +37,7 @@ div#dashboard-content-header span {
    line-height: 34px;
 }
 
-div#dashboard-content-container div#orphanages-modal-wrapper {
+div#dashboard-content-container div#dashboard-content-wrapper {
    display: grid;
 
    gap: 20px;

@@ -47,6 +47,7 @@ const NestedSidebar: React.FC<NestedSidebarProps> = ({ nestedLinks }) => {
             {nestedLinks.map((nestedLink) => {
                return (
                   <button
+                     key={nestedLink.pathname}
                      type='button'
                      onClick={() => push(nestedLink.pathname)}
                      className={pathname === nestedLink.pathname ? 'active' : ''}
