@@ -1,6 +1,6 @@
 import React from 'react';
 
-import '../../styles/pages/dashboard/index.css'
+import '../../styles/components/layouts/dashboard-content-layout.css'
 
 export interface DashboardContentLayoutProps {
    header: {

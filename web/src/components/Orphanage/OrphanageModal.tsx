@@ -4,7 +4,7 @@ import { Map, TileLayer, Marker, } from 'react-leaflet'
 import { OrphanageInterface } from '../../@types/orphanage'
 import { formatToShortText } from '../../utils/formatToShortText'
 
-import '../../styles/components/dashboard/orphanage-modal.css'
+import '../../styles/components/orphanage/orphanage-modal.css'
 import mapIcon from "../../utils/mapIcon"
 
 interface OrphanageModalProps {

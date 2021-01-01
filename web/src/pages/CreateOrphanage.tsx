@@ -2,7 +2,7 @@ import React, { useState, FormEvent, ChangeEvent, useEffect } from "react";
 import { Map, Marker, TileLayer } from 'react-leaflet';
 
 import '../styles/pages/create-orphanage.css';
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../components/Sidebars/Sidebar";
 import { FiPlus, FiX } from "react-icons/fi";
 import mapIcon from "../utils/mapIcon";
 import { LeafletMouseEvent } from "leaflet";

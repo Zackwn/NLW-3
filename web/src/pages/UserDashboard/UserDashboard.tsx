@@ -1,6 +1,6 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
-import NestedSidebarLayout from '../../components/Dashboard/NestedSidebarLayout'
+import NestedSidebarLayout from '../../components/Layouts/NestedSidebarLayout'
 
 import { dashboardRoutes } from '../../routes'
 

@@ -1,19 +1,5 @@
-#page-orphanage {
-   display: flex;
-   min-height: 100vh;
-}
-
-#page-orphanage main {
-   flex: 1;
-}
-
 .orphanage-details {
-   width: 700px;
-   margin: 64px auto;
-
-   background: #FFFFFF;
-   border: 1px solid #D3E2E5;
-   border-radius: 20px;
+   width: 100%;
 
    overflow: hidden;
 }
@@ -57,6 +43,11 @@
 
 .orphanage-details .orphanage-details-content {
    padding: 80px;
+   padding-bottom: 40px;
+}
+
+.orphanage-details .extra-padding-bottom {
+   padding-bottom: 80px;
 }
 
 .orphanage-details .orphanage-details-content h1 {

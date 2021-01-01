@@ -1,0 +1,37 @@
+div#pending-orphanage-detail-options-wrapper {
+   width: 100%;
+
+   display: flex;
+
+   align-items: center;
+   justify-content: center;
+
+   column-gap: 20px;
+
+   padding: 2.5em 5em;
+
+   background: #F5F8FA;
+}
+
+div#pending-orphanage-detail-options-wrapper .option-button {
+   border: 0;
+   border-radius: 20px;
+
+   padding: .8em 4em;
+
+   display: flex;
+   align-content: center;
+   justify-content: center;
+
+   color: #fff;
+
+   column-gap: 5px;
+}
+
+div#pending-orphanage-detail-options-wrapper .option-button.recuse {
+   background: #FF669D;
+}
+
+div#pending-orphanage-detail-options-wrapper .option-button.accept {
+   background: #3CDC8C;
+}

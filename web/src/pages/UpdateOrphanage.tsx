@@ -9,11 +9,13 @@ import { PositionInterface } from '../@types/position'
 import Button from '../components/Button'
 import FormController from '../components/FormController'
 import Input from '../components/Input'
-import ManageOrphanageLayout from '../components/Orphanage/ManageOrphanageLayout'
+import ManageOrphanageLayout from '../components/Layouts/ManageOrphanageLayout'
 import Textarea from '../components/Textarea'
 import ToastContext from '../context/toast/ToastContext'
 import api from '../services/api'
 import mapIcon from '../utils/mapIcon'
+
+// css -> ../../styles/pages/orphanage/form.css
 
 interface PreviewImage extends ImageInterface {
    isNew: boolean

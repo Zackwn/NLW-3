@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { FiArrowRight } from 'react-icons/fi';
 import { useHistory } from 'react-router-dom';
 import { OrphanageInterface, OrphanageParams } from '../../@types/orphanage';
-import DashboardContentLayout from '../../components/Dashboard/DashboardContentLayout';
+import DashboardContentLayout from '../../components/Layouts/DashboardContentLayout';
 import OrphanageModal from '../../components/Orphanage/OrphanageModal';
+import { adminRoutes } from '../../routes';
 import api from '../../services/api';
 
 const Pending: React.FC = () => {
@@ -28,12 +29,13 @@ const Pending: React.FC = () => {
             return (
                <OrphanageModal
                   orphanage={orphanage}
+                  key={orphanage.id}
                >
                   <div
                      className='icon-button'
                      onClick={() => {
                         // TODO
-                        historyPush('/admin/orphanages/detail/', {
+                        historyPush(adminRoutes.pendingOrphanageDetail, {
                            orphanage: orphanage
                         } as OrphanageParams)
                      }}

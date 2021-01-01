@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { FiArrowRight } from 'react-icons/fi'
 import { useHistory } from 'react-router-dom'
 import { OrphanageInterface, OrphanageParams } from '../../@types/orphanage'
-import DashboardContentLayout from '../../components/Dashboard/DashboardContentLayout'
+import DashboardContentLayout from '../../components/Layouts/DashboardContentLayout'
 import OrphanageModal from '../../components/Orphanage/OrphanageModal'
 import api from '../../services/api'
 

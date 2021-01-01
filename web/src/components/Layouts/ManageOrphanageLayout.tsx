@@ -1,7 +1,7 @@
 import React from 'react';
 
-import '../../styles/components/orphanage/manage-orphanage-layout.css'
-import Sidebar from '../Sidebar';
+import '../../styles/components/layouts/manage-orphanage-layout.css'
+import Sidebar from '../Sidebars/Sidebar';
 
 const ManageOrphanageLayout: React.FC = ({ children }) => {
    return (

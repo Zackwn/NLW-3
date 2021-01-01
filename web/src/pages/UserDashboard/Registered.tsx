@@ -5,7 +5,7 @@ import OrphanageModal from '../../components/Orphanage/OrphanageModal'
 import { FiEdit3, FiTrash } from 'react-icons/fi'
 import api from '../../services/api'
 import { OrphanageInterface } from '../../@types/orphanage'
-import DashboardContentLayout from '../../components/Dashboard/DashboardContentLayout'
+import DashboardContentLayout from '../../components/Layouts/DashboardContentLayout'
 
 const Registered: React.FC = () => {
    const history = useHistory()

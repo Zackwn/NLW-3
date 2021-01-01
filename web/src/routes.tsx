@@ -52,7 +52,8 @@ export const dashboardRoutes = {
 
 export const adminRoutes = {
    registeredOrphanages: '/admin/orphanages/',
-   pendingOrphanges: '/admin/orphanages/pending/'
+   pendingOrphanges: '/admin/orphanages/pending/',
+   pendingOrphanageDetail: '/admin/orphanages/detail/'
 }
 
 const Routes: React.FC = () => {
@@ -75,7 +76,7 @@ const Routes: React.FC = () => {
                   <Route isPrivate path='/dashboard' component={UserDashboard} />
 
                   <Redirect exact from='/admin' to={adminRoutes.registeredOrphanages} />
-                  <Route onlyAdmin={true} path='/admin' component={AdminDashboard} />
+                  <Route onlyAdmin path='/admin' component={AdminDashboard} />
 
                   <Route isPrivate path='/orphanages/create' exact component={CreateOrphanage} />
                   <Route isPrivate path='/orphanages/update' exact component={UpdateOrphanage} />

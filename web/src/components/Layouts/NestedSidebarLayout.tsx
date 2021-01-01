@@ -1,7 +1,7 @@
 import React from 'react'
-import NestedSidebar from './NestedSidebar'
+import NestedSidebar from '../Sidebars/NestedSidebar'
 
-import '../../styles/components/dashboard/nested-sidebar-layout.css'
+import '../../styles/components/layouts/nested-sidebar-layout.css'
 import { FiInfo, FiMapPin } from 'react-icons/fi'
 import { adminRoutes, dashboardRoutes } from '../../routes'
 

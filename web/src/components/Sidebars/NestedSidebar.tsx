@@ -5,7 +5,7 @@ import { IconType } from 'react-icons/lib'
 import mapMarkerImg from '../../assets/map-marker.svg'
 import { useHistory } from 'react-router-dom'
 
-import '../../styles/components/dashboard/nested-sidebar.css'
+import '../../styles/components/sidebars/nested-sidebar.css'
 import AuthContext from '../../context/auth/AuthContext'
 
 export interface NestedLinks {
