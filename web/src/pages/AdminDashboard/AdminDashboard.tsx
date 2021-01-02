@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import ManageOrphanageLayout from '../../components/Layouts/ManageOrphanageLayout';
 import NestedSidebarLayout from '../../components/Layouts/NestedSidebarLayout';
 import { adminRoutes } from '../../routes';
+import Registered from './Registered';
 import Pending from './Pending';
 import PendingOrphanageDetail from './PendingOrphanageDetail'
 
@@ -14,7 +15,7 @@ const Admin: React.FC = () => {
             exact
             component={() =>
                <NestedSidebarLayout links='admin'>
-                  <h1>Registered</h1>
+                  <Registered />
                </NestedSidebarLayout>
             }
          />

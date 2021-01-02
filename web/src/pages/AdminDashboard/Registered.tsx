@@ -5,7 +5,6 @@ import { OrphanageInterface, OrphanageParams } from '../../@types/orphanage';
 import DashboardContentLayout from '../../components/Layouts/DashboardContentLayout';
 import OrphanageModal from '../../components/Orphanage/OrphanageModal';
 import OrphanageModalsWrapper from '../../components/Orphanage/OrphanageModalsWrapper';
-import { adminRoutes } from '../../routes';
 import api from '../../services/api';
 
 const Registered: React.FC = () => {
@@ -24,7 +23,7 @@ const Registered: React.FC = () => {
 
    return (
       <DashboardContentLayout
-         header={{ title: 'Orfanatos Registrados', length: 1 }}
+         header={{ title: 'Orfanatos Registrados', length: orphanages.length }}
       >
          <OrphanageModalsWrapper>
             {orphanages.map(orphanage => {
@@ -37,7 +36,7 @@ const Registered: React.FC = () => {
                         className='icon-button'
                         onClick={() => {
                            // TODO
-                           historyPush(adminRoutes.pendingOrphanageDetail, {
+                           historyPush('/', {
                               orphanage: orphanage
                            } as OrphanageParams)
                         }}
