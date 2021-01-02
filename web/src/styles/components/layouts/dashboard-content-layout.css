@@ -3,9 +3,10 @@ div#dashboard-content-container {
    flex-direction: column;
 
    padding-top: 3%;
-
    width: 80%;
-   height: 100%;
+   height: 100vh;
+
+   overflow: hidden
 }
 
 div#dashboard-content-header {
@@ -38,13 +39,30 @@ div#dashboard-content-header span {
 }
 
 div#dashboard-content-container div#dashboard-content-wrapper {
-   display: grid;
+   display: flex;
 
-   gap: 20px;
+   height: 100%;
+   width: 100%;
+
+   overflow-y: visible;
+   overflow-x: hidden;
+
    margin-top: 40px;
+   margin-bottom: 40px;
+}
 
-   grid-template-columns: 1fr 1fr;
-   grid-template-rows: auto;
+div#dashboard-content-container div#dashboard-content-wrapper::-webkit-scrollbar {
+   width: 8px;
+}
+
+div#dashboard-content-container div#dashboard-content-wrapper::-webkit-scrollbar-track {
+   background: #D3E2E5;
+   border-radius: 50px;
+}
+
+div#dashboard-content-container div#dashboard-content-wrapper::-webkit-scrollbar-thumb {
+   background-color: #ffe394;
+   border-radius: 50px;
 }
 
 div.icon-button {

@@ -28,7 +28,7 @@ const OrphanageModal: React.FC<OrphanageModalProps> = ({ orphanage, children: ic
                zoom={8}
 
                dragging={true}
-               scrollWheelZoom={true}
+               scrollWheelZoom={false}
 
                zoomControl={false}
                touchZoom={false}

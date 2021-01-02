@@ -6,6 +6,7 @@ import { FiEdit3, FiTrash } from 'react-icons/fi'
 import api from '../../services/api'
 import { OrphanageInterface } from '../../@types/orphanage'
 import DashboardContentLayout from '../../components/Layouts/DashboardContentLayout'
+import OrphanageModalsWrapper from '../../components/Orphanage/OrphanageModalsWrapper'
 
 const Registered: React.FC = () => {
    const history = useHistory()
@@ -29,27 +30,29 @@ const Registered: React.FC = () => {
       <DashboardContentLayout
          header={{ title: 'Orfanatos Cadastrados', length: orphanages?.length }}
       >
-         {orphanages && orphanages.map((orphanage) => {
-            return (
-               <OrphanageModal
-                  key={orphanage.id}
-                  orphanage={orphanage}
-               >
-                  <div
-                     className='icon-button'
-                     onClick={() => handleUpdateOrphanage(orphanage)}
+         <OrphanageModalsWrapper>
+            {orphanages && orphanages.map((orphanage) => {
+               return (
+                  <OrphanageModal
+                     key={orphanage.id}
+                     orphanage={orphanage}
                   >
-                     <FiEdit3 color='#15C3D6' size={26} />
-                  </div>
-                  <div
-                     className='icon-button'
-                     onClick={() => handleUpdateOrphanage(orphanage)}
-                  >
-                     <FiTrash color='#15C3D6' size={26} />
-                  </div>
-               </OrphanageModal>
-            )
-         })}
+                     <div
+                        className='icon-button'
+                        onClick={() => handleUpdateOrphanage(orphanage)}
+                     >
+                        <FiEdit3 color='#15C3D6' size={26} />
+                     </div>
+                     <div
+                        className='icon-button'
+                        onClick={() => handleUpdateOrphanage(orphanage)}
+                     >
+                        <FiTrash color='#15C3D6' size={26} />
+                     </div>
+                  </OrphanageModal>
+               )
+            })}
+         </OrphanageModalsWrapper>
       </DashboardContentLayout>
    )
 }
