@@ -36,7 +36,7 @@ const Registered: React.FC = () => {
                         className='icon-button'
                         onClick={() => {
                            // TODO
-                           historyPush('/', {
+                           historyPush('/orphanages/detail/', {
                               orphanage: orphanage
                            } as OrphanageParams)
                         }}
