@@ -24,7 +24,7 @@ const Pending: React.FC = () => {
 
    return (
       <DashboardContentLayout
-         header={{ title: 'Orfanatos Pendentes', length: 0 }}
+         header={{ title: 'Orfanatos Pendentes', length: orphanages.length }}
       >
          <OrphanageModalsWrapper>
             {orphanages.map(orphanage => {
