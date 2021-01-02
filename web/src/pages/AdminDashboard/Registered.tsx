@@ -1,10 +1,54 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { FiArrowRight } from 'react-icons/fi';
+import { useHistory } from 'react-router-dom';
+import { OrphanageInterface, OrphanageParams } from '../../@types/orphanage';
+import DashboardContentLayout from '../../components/Layouts/DashboardContentLayout';
+import OrphanageModal from '../../components/Orphanage/OrphanageModal';
+import OrphanageModalsWrapper from '../../components/Orphanage/OrphanageModalsWrapper';
+import { adminRoutes } from '../../routes';
+import api from '../../services/api';
 
 const Registered: React.FC = () => {
+   const { push: historyPush } = useHistory()
+
+   const [orphanages, setOrphanages] = useState<OrphanageInterface[]>([])
+
+   useEffect(() => {
+      async function fetchOrphanages() {
+         const { data } = (await api.get('/orphanages?pending=false'))
+         setOrphanages(data)
+      }
+
+      fetchOrphanages()
+   }, [])
+
    return (
-      <div style={{ color: '#000', fontSize: 90 }}>
-         Registered Admin
-      </div>
+      <DashboardContentLayout
+         header={{ title: 'Orfanatos Registrados', length: 1 }}
+      >
+         <OrphanageModalsWrapper>
+            {orphanages.map(orphanage => {
+               return (
+                  <OrphanageModal
+                     orphanage={orphanage}
+                     key={orphanage.id}
+                  >
+                     <div
+                        className='icon-button'
+                        onClick={() => {
+                           // TODO
+                           historyPush(adminRoutes.pendingOrphanageDetail, {
+                              orphanage: orphanage
+                           } as OrphanageParams)
+                        }}
+                     >
+                        <FiArrowRight color='#15C3D6' size={26} />
+                     </div>
+                  </OrphanageModal>
+               )
+            })}
+         </OrphanageModalsWrapper>
+      </DashboardContentLayout>
    )
 }
 
