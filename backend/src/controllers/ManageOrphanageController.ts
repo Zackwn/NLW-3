@@ -3,7 +3,7 @@ import { FindManyOptions, getManager, getRepository } from 'typeorm'
 import deleteImages from '../helpers/deleteImages'
 import Image from '../models/Images'
 import Orphanage from '../models/Orphanages'
-import { orphanageIsFromUserOrFail } from '../utils/orphanageIsFromUserOrFail'
+import { secureGetOrphanage } from '../utils/secureGetOrphanage'
 import { parseIntOrFail } from '../utils/parseIntOrFail'
 import OrphanageView from '../views/orphanages_view'
 // import OrphanageValidation from '../validation/orphanages'
@@ -37,14 +37,10 @@ export class ManageOrphanageController {
     async deleteById(req: Request, res: Response) {
         const orphanageId = parseIntOrFail(req.params.id)
 
-        const orphanage = (await getRepository(Orphanage).findOneOrFail(orphanageId, {
-            relations: ['images']
-        }))
-
-        orphanageIsFromUserOrFail(
-            { userId: req.userId, userRole: req.userRole },
-            orphanage.creator_id,
-            { passAdmin: false }
+        const orphanage = await secureGetOrphanage(
+            { userId: req.userId, userRole: req.userRole, passAdmin: true },
+            orphanageId,
+            ['images']
         )
 
         // delete orphanage

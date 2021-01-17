@@ -48,8 +48,10 @@ routes.get('/orphanages/:id', orphanagesController.show)
 routes.use(authMiddleware)
 
 /* Create and Update */
-routes.post('/orphanage', upload.array('images'), orphanagesController.create)
-routes.put('/orphanage/:id', upload.array('new_images'), orphanagesController.update)
+routes.post('/orphanage', orphanagesController.create)
+routes.put('/orphanage/:id', orphanagesController.update)
+
+routes.patch('/orphanage/images/:id', upload.array('images'), orphanagesController.patchImages)
 
 /* User Manage Orphanages */
 routes.get('/user/orphanages/', manageOrphanageController.getUserOrphanages)
